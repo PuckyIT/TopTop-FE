@@ -1,0 +1,171 @@
+import { useState } from "react";
+import axiosInstance from "@/untils/axiosInstance";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useTheme } from "@/app/context/ThemeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+
+const UploadVideoButton: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [desc, setDesc] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
+
+  const user = useSelector((state: any) => state.user);
+  const { theme } = useTheme();
+
+  const themeClasses = {
+    background: theme === "dark" ? "bg-gray-800" : "bg-white",
+    color: theme === "dark" ? "text-white" : "text-gray-900",
+    borderColor: theme === "dark" ? "border-gray-600" : "border-gray-300",
+    button:
+      theme === "dark"
+        ? "bg-red-600 hover:bg-red-700"
+        : "bg-red-500 hover:bg-red-600",
+  };
+
+  const handleUploadClick = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+
+  const handleVideoUpload = async () => {
+    if (!title || !videoFile) {
+      toast.error("Vui lòng nhập tiêu đề và chọn video để tải lên.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Bạn cần đăng nhập để tải video.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("video", videoFile);
+    formData.append("title", title);
+    formData.append("desc", desc);
+    formData.append("userId", user.id);
+    formData.append("username", user.username);
+
+    try {
+      setUploading(true);
+      await axiosInstance.post("/videos/upload-video", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Tải video thành công!");
+      setTitle("");
+      setDesc("");
+      setVideoFile(null);
+      setIsModalOpen(false);
+    } catch {
+      toast.error("Tải video thất bại.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={handleUploadClick}
+        className={`flex items-center justify-center gap-2 py-2 px-4 rounded font-semibold ${themeClasses.button} text-white transition duration-300`}
+        disabled={uploading}
+      >
+        {uploading ? (
+          <>
+            <FontAwesomeIcon
+              icon={faUpload}
+              className="animate-spin w-4 h-4 text-white"
+            />
+            Uploading...
+          </>
+        ) : (
+          <>
+            <FontAwesomeIcon
+              icon={faUpload}
+              className={`w-4 h-4 ${
+                theme === "light" ? "text-gray-100" : "text-white"
+              }`}
+            />
+            Upload
+          </>
+        )}
+      </button>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div
+            className={`w-11/12 max-w-lg p-6 rounded-lg shadow-lg ${themeClasses.background} transform transition-all duration-300`}
+          >
+            <h2
+              className={`text-2xl font-bold mb-6 text-center ${themeClasses.color}`}
+            >
+              Upload Video
+            </h2>
+            <div className="mb-4">
+              <label
+                className={`block text-sm font-medium mb-1 ${themeClasses.color}`}
+              >
+                Video Title
+              </label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter title"
+                className={`w-full p-3 rounded border focus:outline-none focus:ring-1 ${themeClasses.borderColor} focus:ring-slate-400`}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className={`block text-sm font-medium mb-1 ${themeClasses.color}`}
+              >
+                Video Description
+              </label>
+              <input
+                type="text"
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="Enter description"
+                className={`w-full p-3 rounded border focus:outline-none focus:ring-1 ${themeClasses.borderColor} focus:ring-slate-400`}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className={`block text-sm font-medium mb-1 ${themeClasses.color}`}
+              >
+                Upload Video
+              </label>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-100 file:text-red-700 hover:file:bg-red-200 transition"
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={handleCancel}
+                className={`py-2 px-4 rounded font-semibold border ${themeClasses.borderColor} ${themeClasses.color} hover:bg-gray-100 transition`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleVideoUpload}
+                disabled={uploading}
+                className={`py-2 px-4 rounded font-semibold ${themeClasses.button} text-white transition`}
+              >
+                {uploading ? "Uploading..." : "Upload"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default UploadVideoButton;
