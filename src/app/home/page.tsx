@@ -96,14 +96,19 @@ const HomePage: React.FC = () => {
                 className="h-screen flex justify-center items-center snap-start"
               >
                 <ShortVideo
-                  videoId={video.videoId}
-                  videoUrl={video.videoUrl} // Nếu API không trả `videoUrl`, bạn cần sửa lại
-                  poster={video.poster}
+                  id={video.id}
+                  videoUrl={video.videoUrl}
                   title={video.title}
                   desc={video.desc}
-                  user={video.user}
+                  username={video.username}
+                  commentCount={video.commentCount}
+                  avatar={video.avatar}
                   likes={video.likes}
                   views={video.views}
+                  isPublic={video.isPublic}
+                  saved={video.saved}
+                  shared={video.shared}
+                  userId={video.userId}
                   createdAt={video.createdAt}
                   autoPlay={index === currentVideoIndex}
                 />

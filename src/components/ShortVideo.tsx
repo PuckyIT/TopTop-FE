@@ -11,25 +11,37 @@ import {
   faVolumeMute,
   faUpLong,
   faHeart,
-  faEye,
+  faComment,
+  faBookmark,
+  faShare
 } from "@fortawesome/free-solid-svg-icons";
-import { Heart, MessageCircle, Bookmark, Share2 } from 'lucide-react'
 
 import toast from "react-hot-toast";
 import { ShortVideoProps } from "@/app/types/video.types";
 import Image from "next/image";
 import { useVideoView } from "@/hooks/useVideoView";
+import { useVideoInteractions } from "@/hooks/useVideoInteractions";
 
 const ShortVideo: React.FC<ShortVideoProps> = ({
+  id,
+  userId,
   videoUrl,
-  poster,
   title,
   desc,
-  user,
-  likes,
+  username,
+  likes: initialLikes,
   views,
-  videoId,
+  comments,
+  commentCount,
+  isPublic,
+  likedBy,
+  saved: initialSaved,
+  savedBy,
+  shared: initialShared,
+  sharedBy,
   createdAt,
+  updatedAt,
+  avatar,
   autoPlay = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -41,10 +53,31 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const [showSlider, setShowSlider] = useState(false);
   const [showPlayPauseButton, setShowPlayPauseButton] = useState(false);
+  const isUserLiked = (likedBy || []).includes(userId);
+  const isUserSaved = (savedBy || []).includes(userId);
 
   const { handleTimeUpdate: handleViewCount } = useVideoView({
-    videoId: videoId, // Assuming user._id is the video ID
+    videoId: id,
     viewThreshold: 0.8,
+  });
+
+  const {
+    likes,
+    saved,
+    shared,
+    isVideoLiked,
+    isVideoSaved,
+    handleLike,
+    handleSave,
+    handleShare,
+    handleComment
+  } = useVideoInteractions({
+    id,
+    initialLikes,
+    initialSaved,
+    initialShared,
+    isLiked: isUserLiked,
+    isSaved: isUserSaved,
   });
 
   // Update video metadata and currentTime
@@ -144,7 +177,6 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
         <video
           ref={videoRef}
           src={videoUrl}
-          poster={poster}
           className="w-full max-w-lg h-full object-cover"
           loop
           playsInline
@@ -172,7 +204,7 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
 
         {/* Video Info */}
         <div className="absolute left-[4%] bottom-[12%] w-[90%] text-white text-opacity-90">
-          <h3 className="text-lg font-bold">{user.username}<p className="text-xs text-gray-400">{new Date(createdAt).toLocaleString()}</p></h3>
+          <h3 className="text-lg font-bold">{username}<p className="text-xs text-gray-400">{new Date(createdAt).toLocaleString()}</p></h3>
 
           {/* Video Title */}
           <p className="mt-2 text-base">{title}</p>
@@ -247,8 +279,8 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
       <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
         <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
           <Image
-            src={user.avatar}
-            alt={user.username}
+            src={avatar}
+            alt={username}
             width={48}
             height={48}
             className="object-cover"
@@ -256,32 +288,41 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
           <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-red-500 text-lg rounded-full">+</p>
         </div>
 
-        <button className="flex flex-col items-center space-y-1">
-          <div className="w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full">
-            <FontAwesomeIcon icon={faHeart} className="text-2xl text-foreground" />
+        <button
+          className="flex flex-col items-center space-y-1"
+          onClick={handleLike}
+        >
+          <div className={`w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full ${isVideoLiked ? 'text-red-500' : ''}`}>
+            <FontAwesomeIcon icon={faHeart} className={`text-2xl text-foreground ${isVideoLiked ? 'text-red-500' : ''}`} />
           </div>
           <span className="text-xs font-bold text-foreground">{likes}</span>
         </button>
 
         <button className="flex flex-col items-center space-y-1">
           <div className="w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full">
-            <FontAwesomeIcon icon={faEye} className="text-2xl text-foreground" />
+            <FontAwesomeIcon icon={faComment} className="text-2xl text-foreground" />
           </div>
-          <span className="text-xs font-bold text-foreground">{views}</span>
+          <span className="text-xs font-bold text-foreground">{commentCount}</span>
         </button>
 
-        <button className="flex flex-col items-center space-y-1">
-          <div className="w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full">
-            <Bookmark className="w-6 h-6 text-foreground" />
+        <button
+          className="flex flex-col items-center space-y-1"
+          onClick={handleSave}
+        >
+          <div className={`w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full ${isVideoSaved ? 'text-yellow-500' : ''}`}>
+            <FontAwesomeIcon icon={faBookmark} className={`text-2xl text-foreground ${isVideoSaved ? 'text-yellow-500' : ''}`} />
           </div>
-          <span className="text-xs font-bold text-foreground">125</span>
+          <span className="text-xs font-bold text-foreground">{saved}</span>
         </button>
 
-        <button className="flex flex-col items-center space-y-1">
+        <button
+          className="flex flex-col items-center space-y-1"
+          onClick={handleShare}
+        >
           <div className="w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full">
-            <Share2 className="w-6 h-6 text-foreground" />
+            <FontAwesomeIcon icon={faShare} className="text-2xl text-foreground" />
           </div>
-          <span className="text-xs font-bold text-foreground">120</span>
+          <span className="text-xs font-bold text-foreground">{shared}</span>
         </button>
       </div>
     </div>

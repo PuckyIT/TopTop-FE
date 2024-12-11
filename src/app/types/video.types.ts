@@ -2,15 +2,25 @@
 import { User } from "./user.types";
 
 export type VideoType = {
-    videoId: string;
+    id: string;
+    userId: string;
     videoUrl: string;
     title: string;
     desc: string;
-    poster: string;
-    user: User;
+    username: string;
     likes: number;
     views: number;
+    comments?: any[];
+    commentCount: number;
+    isPublic: boolean;
+    likedBy?: string[];
+    saved: number;
+    savedBy?: string[];
+    shared: number;
+    sharedBy?: string[];
     createdAt: string;
+    updatedAt?: string;
+    avatar: string;
 };
 
 export type VideoResponse = {
@@ -23,7 +33,8 @@ export type VideoResponse = {
     };
 };
 
-// Cập nhật props của ShortVideo để sử dụng VideoType
-export type ShortVideoProps = VideoType & {
-    autoPlay: boolean;
+// Props for ShortVideo component
+export type ShortVideoProps = Omit<VideoType, 'user'> & {
+    autoPlay?: boolean;
+    user?: User;
 };
