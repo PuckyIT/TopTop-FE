@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import HeaderComponent from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,11 +41,11 @@ export default function RootLayout({
             <script
               dangerouslySetInnerHTML={{
                 __html: `
-              (function() {
+                (function() {
                 const theme = localStorage.getItem('theme') || 'light';
                 document.documentElement.setAttribute('data-theme', theme);
-              })();
-            `,
+                })();
+                `,
               }}
             />
           </head>
@@ -52,6 +53,7 @@ export default function RootLayout({
             <body className={inter.className}>
               {/* Cấu trúc chính của layout */}
               <div className="flex min-h-screen w-full">
+                <Toaster />
                 {/* Header */}
                 {!hideHeaderFooter && <HeaderComponent />}
 

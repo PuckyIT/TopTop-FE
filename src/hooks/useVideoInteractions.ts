@@ -35,7 +35,12 @@ export const useVideoInteractions = ({
         setLikes(prev => prev + 1);
       }
       setIsVideoLiked(!isVideoLiked);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        setIsVideoLiked(true);
+        toast.error(error.response.data.message);
+        return;
+      }
       toast.error('Please login to like videos');
       console.error('Error toggling like:', error);
     }
@@ -51,7 +56,12 @@ export const useVideoInteractions = ({
         setSaved(prev => prev + 1);
       }
       setIsVideoSaved(!isVideoSaved);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        setIsVideoSaved(true);
+        toast.error(error.response.data.message);
+        return;
+      }
       toast.error('Please login to save videos');
       console.error('Error toggling save:', error);
     }
@@ -62,7 +72,11 @@ export const useVideoInteractions = ({
       await axiosInstance.post(`/videos/${id}/share`);
       setShared(prev => prev + 1);
       toast.success('Video shared successfully!');
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        toast.error(error.response.data.message);
+        return;
+      }
       toast.error('Error sharing video');
       console.error('Error sharing video:', error);
     }
