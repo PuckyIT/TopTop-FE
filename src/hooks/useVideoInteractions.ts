@@ -97,11 +97,11 @@ export const useVideoInteractions = ({
   };
 
   return {
+    isVideoLiked,
+    isVideoSaved,
     likes,
     saved,
     shared,
-    isVideoLiked,
-    isVideoSaved,
     handleLike,
     handleSave,
     handleShare,

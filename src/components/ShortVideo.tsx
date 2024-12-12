@@ -17,31 +17,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import toast from "react-hot-toast";
-import { ShortVideoProps } from "@/app/types/video.types";
+import { VideoType } from "@/app/types/video.types";
 import Image from "next/image";
 import { useVideoView } from "@/hooks/useVideoView";
-import { useVideoInteractions } from "@/hooks/useVideoInteractions";
+import axiosInstance from "@/untils/axiosInstance";
 
-const ShortVideo: React.FC<ShortVideoProps> = ({
+const ShortVideo: React.FC<VideoType> = ({
   id,
-  userId,
   videoUrl,
   title,
   desc,
-  username,
   likes: initialLikes,
   views,
   comments,
   commentCount,
   isPublic,
-  likedBy,
   saved: initialSaved,
-  savedBy,
   shared: initialShared,
-  sharedBy,
   createdAt,
   updatedAt,
-  avatar,
+  likedBy = [],
+  savedBy = [],
+  user: { id: userId, username, avatar },
+  sharedBy,
   autoPlay = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,31 +51,14 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const [showSlider, setShowSlider] = useState(false);
   const [showPlayPauseButton, setShowPlayPauseButton] = useState(false);
-  const isUserLiked = (likedBy || []).includes(userId);
-  const isUserSaved = (savedBy || []).includes(userId);
-
+  const [likes, setLikes] = useState(Number(initialLikes));
+  const [saved, setSaved] = useState(Number(initialSaved));
+  const [shared, setShared] = useState(Number(initialShared));
+  const [isVideoLiked, setIsVideoLiked] = useState(false);
+  const [isVideoSaved, setIsVideoSaved] = useState(false);
   const { handleTimeUpdate: handleViewCount } = useVideoView({
     videoId: id,
     viewThreshold: 0.8,
-  });
-
-  const {
-    likes,
-    saved,
-    shared,
-    isVideoLiked,
-    isVideoSaved,
-    handleLike,
-    handleSave,
-    handleShare,
-    handleComment
-  } = useVideoInteractions({
-    id,
-    initialLikes,
-    initialSaved,
-    initialShared,
-    isLiked: isUserLiked,
-    isSaved: isUserSaved,
   });
 
   // Update video metadata and currentTime
@@ -160,6 +141,94 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
     // Hiển thị nút Play/Pause và đặt timer để ẩn nó
     setShowPlayPauseButton(true);
     setTimeout(() => setShowPlayPauseButton(false), 1000);
+  };
+
+  useEffect(() => {
+    const currentUser = localStorage.getItem("user");
+
+    if (currentUser) {
+      try {
+        const parsedUser = JSON.parse(currentUser);
+        const currentId = parsedUser.id;
+        if (currentId) {
+          setIsVideoLiked(likedBy.includes(currentId));
+          setIsVideoSaved(savedBy.includes(currentId));
+        }
+      } catch (error) {
+        console.error("Error parsing user data from localStorage:", error);
+      }
+    }
+  }, [userId]);
+
+  const handleLike = async () => {
+    try {
+      if (isVideoLiked) {
+        await axiosInstance.delete(`/videos/${id}/like`);
+        setLikes(prev => prev - 1);
+      } else {
+        await axiosInstance.post(`/videos/${id}/like`);
+        setLikes(prev => prev + 1);
+      }
+      setIsVideoLiked(!isVideoLiked);
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        setIsVideoLiked(true);
+        toast.error(error.response.data.message);
+        return;
+      }
+      toast.error('Please login to like videos');
+      console.error('Error toggling like:', error);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      if (isVideoSaved) {
+        await axiosInstance.delete(`/videos/${id}/save`);
+        setSaved(prev => prev - 1);
+      } else {
+        await axiosInstance.post(`/videos/${id}/save`);
+        setSaved(prev => prev + 1);
+      }
+      setIsVideoSaved(!isVideoSaved);
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        setIsVideoSaved(true);
+        toast.error(error.response.data.message);
+        return;
+      }
+      toast.error('Please login to save videos');
+      console.error('Error toggling save:', error);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      await axiosInstance.post(`/videos/${id}/share`);
+      setShared(prev => prev + 1);
+      toast.success('Video shared successfully!');
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        toast.error(error.response.data.message);
+        return;
+      }
+      toast.error('Error sharing video');
+      console.error('Error sharing video:', error);
+    }
+  };
+
+  const handleComment = async (content: string) => {
+    try {
+      await axiosInstance.post(`/videos/${id}/comment`, {
+        content
+      });
+      toast.success('Comment added successfully!');
+      return true;
+    } catch (error) {
+      toast.error('Please login to comment');
+      console.error('Error adding comment:', error);
+      return false;
+    }
   };
 
   return (
@@ -280,7 +349,7 @@ const ShortVideo: React.FC<ShortVideoProps> = ({
         <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
           <Image
             src={avatar}
-            alt={username}
+            alt={'Avatar'}
             width={48}
             height={48}
             className="object-cover"

@@ -100,16 +100,16 @@ const HomePage: React.FC = () => {
                   videoUrl={video.videoUrl}
                   title={video.title}
                   desc={video.desc}
-                  username={video.username}
                   commentCount={video.commentCount}
-                  avatar={video.avatar}
                   likes={video.likes}
                   views={video.views}
                   isPublic={video.isPublic}
                   saved={video.saved}
                   shared={video.shared}
-                  userId={video.userId}
                   createdAt={video.createdAt}
+                  likedBy={video.likedBy}
+                  savedBy={video.savedBy}
+                  user={video.user}
                   autoPlay={index === currentVideoIndex}
                 />
               </div>
