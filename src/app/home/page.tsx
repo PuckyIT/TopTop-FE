@@ -77,12 +77,19 @@ const HomePage: React.FC = () => {
     <AbilityProvider role="user">
       <Spinner visible={loading} />
       <div
-        className={`min-h-screen theme-transition ${theme === "dark" ? "bg-black" : "bg-white"
+        className={`min-h-screen theme-transition transition ease-in-out duration-300 
+        ${theme === "dark"
+            ? "bg-black"
+            : "bg-white"
           }`}
       >
         <div
           ref={videoContainerRef}
-          className={`h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-hide theme-transition ${theme === "dark" ? "bg-black text-white" : "bg-white text-neutral-800"
+          className={`h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-hide theme-transition 
+            transition ease-in-out duration-300 
+            ${theme === "dark"
+              ? "bg-black text-white"
+              : "bg-white text-neutral-800"
             }`}
         >
           {error ? (

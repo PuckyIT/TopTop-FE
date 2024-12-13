@@ -12,11 +12,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTable, faBook, faHeart, faShare, faCog } from "@fortawesome/free-solid-svg-icons"
 import { User } from "../types/user.types"
 import EditProfileModal from "@/components/EditProfileModal"
+import Spinner from "@/components/Spinner"
 
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch()
   const user = useSelector((state: any) => state.user) as User
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState(true);
   const { theme } = useTheme()
   const [activeTab, setActiveTab] = useState("1")
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -55,15 +56,13 @@ const ProfilePage: React.FC = () => {
     { key: "3", label: "Liked", icon: faHeart },
   ]
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>
-  }
-
   return (
-    <div className={`min-h-screen ${theme === "light"
-      ? "bg-white text-neutral-800 border-b"
-      : "bg-black text-neutral-100 border-b"
+    <div className={`min-h-screen transition ease-in-out duration-300 
+      ${theme === "light"
+        ? "bg-white text-neutral-800 border-b"
+        : "bg-black text-neutral-100 border-b"
       }`}>
+      <Spinner visible={loading} />
       <div className="relative container mx-auto px-4 py-8 mt-20">
         <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
           <div className="relative w-52 h-52">
@@ -146,12 +145,17 @@ const ProfilePage: React.FC = () => {
         </div>
       </div>
 
-      <EditProfileModal
-        isOpen={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        user={user}
-        theme={theme}
-      />
+      {isModalVisible && user && (
+        <EditProfileModal
+          isOpen={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          userAvatar={user?.avatar}
+          userId={user?._id}
+          userUsername={user?.username}
+          userBio={user?.bio}
+          theme={theme}
+        />
+      )}
     </div>
   )
 }

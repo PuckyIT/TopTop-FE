@@ -80,9 +80,10 @@ const HeaderComponent: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full h-20 z-10 flex items-center justify-between px-5 theme-transition ${theme === "light"
-          ? "bg-white text-neutral-800 border-b"
-          : "bg-black text-neutral-100 border-b"
+      className={`fixed top-0 left-0 w-full h-20 z-10 flex items-center justify-between px-5 theme-transition transition ease-in-out duration-300 
+        ${theme === "light"
+          ? "bg-white text-neutral-800 border-b border-neutral-200"
+          : "bg-black text-neutral-100 border-b border-neutral-800"
         }`}
     >
       <div className="flex items-center w-1/6">
@@ -109,9 +110,9 @@ const HeaderComponent: React.FC = () => {
           placeholder="Search"
           value={searchTerm}
           onChange={handleSearchChange}
-          className={`w-full py-2 px-4 rounded-full text-base ${theme === "light"
-              ? "bg-neutral-100 text-neutral-800 placeholder-gray-500"
-              : "bg-neutral-700 text-neutral-100 placeholder-gray-400"
+          className={`w-full py-2 px-4 rounded-full text-base transition ease-in-out duration-300 ${theme === "light"
+            ? "bg-neutral-100 text-neutral-800 placeholder-gray-500"
+            : "bg-neutral-700 text-neutral-100 placeholder-gray-400"
             } focus:outline-none focus:ring-2 focus:ring-red-500`}
         />
         <FontAwesomeIcon
@@ -127,7 +128,7 @@ const HeaderComponent: React.FC = () => {
             <UploadVideoButton />
             <Link href="/profile" className="ml-4">
               <div
-                className={`w-10 h-10 max-w-10 max-h-10 rounded-full flex items-center justify-center text-white font-bold ${user?.avatar ? "" : "bg-rose-500"
+                className={`w-10 h-10 max-w-10 max-h-10 rounded-full flex items-center justify-center text-white font-bold
                   }`}
               >
                 {user?.avatar ? (

@@ -21,6 +21,7 @@ import { VideoType } from "@/app/types/video.types";
 import Image from "next/image";
 import { useVideoView } from "@/hooks/useVideoView";
 import axiosInstance from "@/untils/axiosInstance";
+import { useTheme } from "@/app/context/ThemeContext";
 
 const ShortVideo: React.FC<VideoType> = ({
   id,
@@ -56,6 +57,7 @@ const ShortVideo: React.FC<VideoType> = ({
   const [shared, setShared] = useState(Number(initialShared));
   const [isVideoLiked, setIsVideoLiked] = useState(false);
   const [isVideoSaved, setIsVideoSaved] = useState(false);
+  const { theme } = useTheme()
   const { handleTimeUpdate: handleViewCount } = useVideoView({
     videoId: id,
     viewThreshold: 0.8,
@@ -232,7 +234,7 @@ const ShortVideo: React.FC<VideoType> = ({
   };
 
   return (
-    <div className="relative h-5/6 mt-20 flex flex-row overflow-hidden w-screen justify-center right-40">
+    <div className="relative h-5/6 mt-20 flex flex-row overflow-hidden w-screen justify-center right-40 bg-transparent transition ease-in-out duration-300">
       <div
         className="relative max-w-lg overflow-hidden rounded-2xl"
         onClick={handlePlayPause}
@@ -352,7 +354,7 @@ const ShortVideo: React.FC<VideoType> = ({
             alt={'Avatar'}
             width={48}
             height={48}
-            className="object-cover"
+            className="object-cover h-full w-full"
           />
           <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
         </div>
@@ -361,15 +363,17 @@ const ShortVideo: React.FC<VideoType> = ({
           className="flex flex-col items-center space-y-1"
           onClick={handleLike}
         >
-          <div className={`w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full ${isVideoLiked ? 'text-red-500' : ''}`}>
-            <FontAwesomeIcon icon={faHeart} className={`text-2xl text-foreground ${isVideoLiked ? 'text-red-500' : ''}`} />
+          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <FontAwesomeIcon icon={faHeart} className={`${isVideoLiked ? 'text-rose-500' : ''}`} />
           </div>
           <span className="text-xs font-bold text-foreground">{likes}</span>
         </button>
 
         <button className="flex flex-col items-center space-y-1">
-          <div className="w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full">
-            <FontAwesomeIcon icon={faComment} className="text-2xl text-foreground" />
+          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <FontAwesomeIcon icon={faComment} />
           </div>
           <span className="text-xs font-bold text-foreground">{commentCount}</span>
         </button>
@@ -378,8 +382,9 @@ const ShortVideo: React.FC<VideoType> = ({
           className="flex flex-col items-center space-y-1"
           onClick={handleSave}
         >
-          <div className={`w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full ${isVideoSaved ? 'text-yellow-500' : ''}`}>
-            <FontAwesomeIcon icon={faBookmark} className={`text-2xl text-foreground ${isVideoSaved ? 'text-yellow-500' : ''}`} />
+          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <FontAwesomeIcon icon={faBookmark} className={`${isVideoSaved ? 'text-yellow-500' : ''}`} />
           </div>
           <span className="text-xs font-bold text-foreground">{saved}</span>
         </button>
@@ -388,8 +393,9 @@ const ShortVideo: React.FC<VideoType> = ({
           className="flex flex-col items-center space-y-1"
           onClick={handleShare}
         >
-          <div className="w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full">
-            <FontAwesomeIcon icon={faShare} className="text-2xl text-foreground" />
+          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <FontAwesomeIcon icon={faShare} />
           </div>
           <span className="text-xs font-bold text-foreground">{shared}</span>
         </button>

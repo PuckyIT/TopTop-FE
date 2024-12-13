@@ -61,38 +61,36 @@ const Sidebar = () => {
     },
     ...(userLoggedIn
       ? [
-          {
-            key: "4",
-            icon: faUser as IconDefinition,
-            label: "Profile",
-          },
-        ]
+        {
+          key: "4",
+          icon: faUser as IconDefinition,
+          label: "Profile",
+        },
+      ]
       : []),
   ];
 
   return (
     <div
       id="sidebar"
-      className={`w-64 max-h-screen theme-transition ${
-        theme === "light"
+      className={`w-64 p-4 max-h-screen theme-transition transition ease-in-out duration-300 ${theme === "light"
           ? "bg-white text-neutral-800 border-b"
           : "bg-black text-neutral-100 border-b"
-      } p-4`}
+        }`}
     >
       <div className="space-y-2 mt-20 flex flex-col">
         {menuItems.map((item) => (
           <div
             key={item.key}
             onClick={() => handleMenuClick(item.key)}
-            className={`flex items-center text-left space-x-3 p-3 rounded-md cursor-pointer transition-all duration-200 ${
-              selectedKey === item.key
+            className={`flex items-center text-left space-x-3 p-3 rounded-md cursor-pointer transition-all duration-200 ${selectedKey === item.key
                 ? theme === "dark"
                   ? "text-red-500 font-bold"
                   : "text-red-600 font-bold"
                 : theme === "dark"
-                ? "text-neutral-400 hover:text-neutral-200"
-                : "text-neutral-800 hover:text-neutral-600"
-            }`}
+                  ? "text-neutral-400 hover:text-neutral-200"
+                  : "text-neutral-800 hover:text-neutral-600"
+              }`}
           >
             <FontAwesomeIcon icon={item.icon} className="text-lg w-8" />
             <span className="text-xl font-semibold">{item.label}</span>

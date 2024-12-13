@@ -37,11 +37,11 @@ const LoginPage: React.FC = () => {
         {
           email,
           password,
-        },{
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
       );
       toast.success("Đăng nhập thành công!");
       localStorage.setItem("token", response.data.accessToken);
@@ -107,17 +107,16 @@ const LoginPage: React.FC = () => {
 
   return (
     <div
-      className={`flex justify-center items-center min-h-screen p-4 ${
-        theme === "dark"
-          ? "bg-gradient-to-br from-gray-900 to-gray-800"
-          : "bg-gradient-to-br from-gray-50 to-blue-50"
-      }`}
+      className={`flex justify-center items-center min-h-screen p-4 
+        ${theme === "dark"
+          ? "bg-gradient-to-br from-neutral-900 to-neutral-800"
+          : "bg-gradient-to-br from-neutral-50 to-neutral-100"
+        }`}
     >
       <form
         onSubmit={onFinish}
-        className={`w-full max-w-lg p-8 space-y-6 rounded-xl shadow-lg ${
-          theme === "dark" ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
-        }`}
+        className={`w-full max-w-lg p-8 space-y-6 rounded-xl shadow-lg ${theme === "dark" ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
+          }`}
       >
         <div className="flex flex-col items-center space-y-2">
           <Image src="/logo.png" alt="Logo" width={100} height={100} />
@@ -134,11 +133,10 @@ const LoginPage: React.FC = () => {
               id="email"
               name="email"
               required
-              className={`mt-1 text-sm block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
-                theme === "dark"
-                  ? "bg-neutral-700 border-neutral-600"
-                  : "bg-neutral-50 border-neutral-300"
-              }`}
+              className={`mt-1 text-sm block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${theme === "dark"
+                ? "bg-neutral-700 border-neutral-600"
+                : "bg-neutral-50 border-neutral-300"
+                }`}
               placeholder="Your Email"
             />
           </div>
@@ -153,11 +151,10 @@ const LoginPage: React.FC = () => {
                 id="password"
                 name="password"
                 required
-                className={`block text-sm w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
-                  theme === "dark"
-                    ? "bg-neutral-700 border-neutral-600"
-                    : "bg-neutral-50 border-neutral-300"
-                }`}
+                className={`block text-sm w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${theme === "dark"
+                  ? "bg-neutral-700 border-neutral-600"
+                  : "bg-neutral-50 border-neutral-300"
+                  }`}
                 placeholder="Your Password"
               />
               <button
@@ -177,11 +174,10 @@ const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white ${
-              loading
-                ? "bg-rose-400 cursor-not-allowed"
-                : "bg-rose-500 hover:bg-rose-600"
-            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500`}
+            className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white ${loading
+              ? "bg-rose-400 cursor-not-allowed"
+              : "bg-rose-500 hover:bg-rose-600"
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500`}
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>
@@ -205,18 +201,16 @@ const LoginPage: React.FC = () => {
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div
-                className={`w-full border-t ${
-                  theme === "dark" ? "border-neutral-600" : "border-neutral-300"
-                }`}
+                className={`w-full border-t ${theme === "dark" ? "border-neutral-600" : "border-neutral-300"
+                  }`}
               ></div>
             </div>
             <div className="relative flex justify-center text-sm">
               <span
-                className={`px-2 ${
-                  theme === "dark"
-                    ? "bg-neutral-800 text-neutral-400"
-                    : "bg-white text-neutral-500"
-                }`}
+                className={`px-2 ${theme === "dark"
+                  ? "bg-neutral-800 text-neutral-400"
+                  : "bg-white text-neutral-500"
+                  }`}
               >
                 Sign in with
               </span>
@@ -227,11 +221,10 @@ const LoginPage: React.FC = () => {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className={`flex items-center justify-center w-12 h-12 rounded-full ${
-                theme === "dark"
-                  ? "bg-neutral-700 hover:bg-neutral-600"
-                  : "bg-neutral-100 hover:bg-neutral-200"
-              }`}
+              className={`flex items-center justify-center w-12 h-12 rounded-full ${theme === "dark"
+                ? "bg-neutral-700 hover:bg-neutral-600"
+                : "bg-neutral-100 hover:bg-neutral-200"
+                }`}
             >
               <Image
                 src="/icons/google.png"
@@ -243,11 +236,10 @@ const LoginPage: React.FC = () => {
             <button
               type="button"
               onClick={handleGithubLogin}
-              className={`flex items-center justify-center w-12 h-12 rounded-full ${
-                theme === "dark"
-                  ? "bg-neutral-700 hover:bg-neutral-600"
-                  : "bg-neutral-100 hover:bg-neutral-200"
-              }`}
+              className={`flex items-center justify-center w-12 h-12 rounded-full ${theme === "dark"
+                ? "bg-neutral-700 hover:bg-neutral-600"
+                : "bg-neutral-100 hover:bg-neutral-200"
+                }`}
             >
               <Image
                 src="/icons/github.png"

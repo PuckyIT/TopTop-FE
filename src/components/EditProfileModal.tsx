@@ -13,21 +13,27 @@ interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: string;
-  user: User;
+  userAvatar: string;
+  userId: string;
+  userUsername: string;
+  userBio: string;
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({
   isOpen,
   onClose,
   theme,
-  user,
+  userAvatar,
+  userId,
+  userUsername,
+  userBio,
 }) => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState(user?.username || "");
-  const [bio, setBio] = useState(user?.bio || "");
+  const [username, setUsername] = useState(userUsername || "");
+  const [bio, setBio] = useState(userBio|| "");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [tempAvatar, setTempAvatar] = useState<string | undefined>(
-    user?.avatar
+    userAvatar
   );
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +59,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       }
 
       const response = await axiosInstance.put(
-        `/users/profile/${user._id}`,
+        `/users/profile/${userId}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -104,7 +110,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   />
                 ) : (
                   <div className="w-24 h-24 rounded-full bg-rose-500 flex items-center justify-center text-white text-3xl font-bold">
-                    {user?.email?.charAt(0).toUpperCase() || ""}
+                    {tempAvatar}
                   </div>
                 )}
                 <label
