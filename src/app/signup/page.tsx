@@ -55,7 +55,7 @@ const SignupPage: React.FC = () => {
       <form
         onSubmit={handleSubmit}
         className={`w-full max-w-lg p-8 space-y-6 rounded-xl shadow-lg ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+          theme === "dark" ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
         }`}
       >
         <div className="flex flex-col items-center space-y-2">
@@ -76,8 +76,8 @@ const SignupPage: React.FC = () => {
               required
               className={`mt-1 block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                 theme === "dark"
-                  ? "bg-gray-700 border-gray-600"
-                  : "bg-gray-50 border-gray-300"
+                  ? "bg-neutral-700 border-neutral-600"
+                  : "bg-neutral-50 border-neutral-300"
               }`}
               placeholder="Your Email"
             />
@@ -95,8 +95,8 @@ const SignupPage: React.FC = () => {
               required
               className={`mt-1 block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                 theme === "dark"
-                  ? "bg-gray-700 border-gray-600"
-                  : "bg-gray-50 border-gray-300"
+                  ? "bg-neutral-700 border-neutral-600"
+                  : "bg-neutral-50 border-neutral-300"
               }`}
               placeholder="Your Username"
             />
@@ -115,8 +115,8 @@ const SignupPage: React.FC = () => {
                 required
                 className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                   theme === "dark"
-                    ? "bg-gray-700 border-gray-600"
-                    : "bg-gray-50 border-gray-300"
+                    ? "bg-neutral-700 border-neutral-600"
+                    : "bg-neutral-50 border-neutral-300"
                 }`}
                 placeholder="Your Password"
               />
@@ -128,7 +128,7 @@ const SignupPage: React.FC = () => {
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    theme === "dark" ? "text-neutral-400" : "text-neutral-600"
                   }
                 />
               </button>
@@ -151,8 +151,8 @@ const SignupPage: React.FC = () => {
                 required
                 className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                   theme === "dark"
-                    ? "bg-gray-700 border-gray-600"
-                    : "bg-gray-50 border-gray-300"
+                    ? "bg-neutral-700 border-neutral-600"
+                    : "bg-neutral-50 border-neutral-300"
                 }`}
                 placeholder="Confirm Password"
               />
@@ -164,7 +164,7 @@ const SignupPage: React.FC = () => {
                 <FontAwesomeIcon
                   icon={showConfirmPassword ? faEyeSlash : faEye}
                   className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    theme === "dark" ? "text-neutral-400" : "text-neutral-600"
                   }
                 />
               </button>
@@ -177,8 +177,8 @@ const SignupPage: React.FC = () => {
           disabled={loading}
           className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white ${
             loading
-              ? "bg-red-400 cursor-not-allowed"
-              : "bg-red-500 hover:bg-red-600"
+              ? "bg-rose-400 cursor-not-allowed"
+              : "bg-rose-500 hover:bg-rose-600"
           } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500`}
         >
           {loading ? "Signing Up..." : "Sign Up"}

@@ -273,7 +273,7 @@ const ShortVideo: React.FC<VideoType> = ({
 
         {/* Video Info */}
         <div className="absolute left-[4%] bottom-[12%] w-[90%] text-white text-opacity-90">
-          <h3 className="text-lg font-bold">{username}<p className="text-xs text-gray-400">{new Date(createdAt).toLocaleString()}</p></h3>
+          <h3 className="text-lg font-bold">{username}<p className="text-xs text-neutral-400">{new Date(createdAt).toLocaleString()}</p></h3>
 
           {/* Video Title */}
           <p className="mt-2 text-base">{title}</p>
@@ -354,21 +354,21 @@ const ShortVideo: React.FC<VideoType> = ({
             height={48}
             className="object-cover"
           />
-          <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-red-500 text-lg rounded-full">+</p>
+          <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
         </div>
 
         <button
           className="flex flex-col items-center space-y-1"
           onClick={handleLike}
         >
-          <div className={`w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full ${isVideoLiked ? 'text-red-500' : ''}`}>
+          <div className={`w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full ${isVideoLiked ? 'text-red-500' : ''}`}>
             <FontAwesomeIcon icon={faHeart} className={`text-2xl text-foreground ${isVideoLiked ? 'text-red-500' : ''}`} />
           </div>
           <span className="text-xs font-bold text-foreground">{likes}</span>
         </button>
 
         <button className="flex flex-col items-center space-y-1">
-          <div className="w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full">
+          <div className="w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full">
             <FontAwesomeIcon icon={faComment} className="text-2xl text-foreground" />
           </div>
           <span className="text-xs font-bold text-foreground">{commentCount}</span>
@@ -378,7 +378,7 @@ const ShortVideo: React.FC<VideoType> = ({
           className="flex flex-col items-center space-y-1"
           onClick={handleSave}
         >
-          <div className={`w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full ${isVideoSaved ? 'text-yellow-500' : ''}`}>
+          <div className={`w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full ${isVideoSaved ? 'text-yellow-500' : ''}`}>
             <FontAwesomeIcon icon={faBookmark} className={`text-2xl text-foreground ${isVideoSaved ? 'text-yellow-500' : ''}`} />
           </div>
           <span className="text-xs font-bold text-foreground">{saved}</span>
@@ -388,7 +388,7 @@ const ShortVideo: React.FC<VideoType> = ({
           className="flex flex-col items-center space-y-1"
           onClick={handleShare}
         >
-          <div className="w-12 h-12 flex items-center justify-center bg-gray-300/20 dark:bg-gray-400/20 rounded-full">
+          <div className="w-12 h-12 flex items-center justify-center bg-neutral-300/20 dark:bg-neutral-400/20 rounded-full">
             <FontAwesomeIcon icon={faShare} className="text-2xl text-foreground" />
           </div>
           <span className="text-xs font-bold text-foreground">{shared}</span>

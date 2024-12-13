@@ -17,13 +17,13 @@ const UploadVideoButton: React.FC = () => {
   const { theme } = useTheme();
 
   const themeClasses = {
-    background: theme === "dark" ? "bg-gray-800" : "bg-white",
-    color: theme === "dark" ? "text-white" : "text-gray-900",
-    borderColor: theme === "dark" ? "border-gray-600" : "border-gray-300",
+    background: theme === "dark" ? "bg-neutral-800" : "bg-white",
+    color: theme === "dark" ? "text-white" : "text-neutral-900",
+    borderColor: theme === "dark" ? "border-neutral-600" : "border-neutral-300",
     button:
       theme === "dark"
-        ? "bg-red-600 hover:bg-red-700"
-        : "bg-red-500 hover:bg-red-600",
+        ? "bg-rose-600 hover:bg-rose-700"
+        : "bg-rose-500 hover:bg-rose-600",
   };
 
   const handleUploadClick = () => setIsModalOpen(true);
@@ -87,7 +87,7 @@ const UploadVideoButton: React.FC = () => {
             <FontAwesomeIcon
               icon={faUpload}
               className={`w-4 h-4 ${
-                theme === "light" ? "text-gray-100" : "text-white"
+                theme === "light" ? "text-neutral-100" : "text-white"
               }`}
             />
             Upload
@@ -143,13 +143,13 @@ const UploadVideoButton: React.FC = () => {
                 type="file"
                 accept="video/*"
                 onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-100 file:text-red-700 hover:file:bg-red-200 transition"
+                className="block w-full text-sm text-neutral-500 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-rose-100 file:text-red-700 hover:file:bg-rose-200 transition"
               />
             </div>
             <div className="flex justify-end space-x-2">
               <button
                 onClick={handleCancel}
-                className={`py-2 px-4 rounded font-semibold border ${themeClasses.borderColor} ${themeClasses.color} hover:bg-gray-100 transition`}
+                className={`py-2 px-4 rounded font-semibold border ${themeClasses.borderColor} ${themeClasses.color} hover:bg-neutral-100 transition`}
               >
                 Cancel
               </button>

@@ -2,7 +2,6 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useTheme } from "@/app/context/ThemeContext"
 import { useDispatch, useSelector } from "react-redux"
@@ -11,8 +10,8 @@ import axiosInstance from "@/untils/axiosInstance"
 import { toast } from 'react-hot-toast'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTable, faBook, faHeart, faShare, faCog } from "@fortawesome/free-solid-svg-icons"
-import EditProfileModal from "@/components/EditProfileModal"
 import { User } from "../types/user.types"
+import EditProfileModal from "@/components/EditProfileModal"
 
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch()
@@ -21,11 +20,10 @@ const ProfilePage: React.FC = () => {
   const { theme } = useTheme()
   const [activeTab, setActiveTab] = useState("1")
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user")
-    if (storedUser) {     
+    if (storedUser) {
       // Fetch user profile
       axiosInstance
         .get(`/users/profile`)
@@ -38,18 +36,17 @@ const ProfilePage: React.FC = () => {
           setLoading(false)
         })
     } else {
-      setLoading(false)
-      router.push('/login')
+      setLoading(true)
     }
-  }, [dispatch, router])
+  }, [dispatch])
 
   const userInitials = user?.email
     ? user.email
-        .split("@")[0]
-        .split(" ")
-        .map((word: string) => word[0])
-        .join("")
-        .toUpperCase()
+      .split("@")[0]
+      .split(" ")
+      .map((word: string) => word[0])
+      .join("")
+      .toUpperCase()
     : "U"
 
   const tabs = [
@@ -63,22 +60,25 @@ const ProfilePage: React.FC = () => {
   }
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'}`}>
+    <div className={`min-h-screen ${theme === "light"
+      ? "bg-white text-neutral-800 border-b"
+      : "bg-black text-neutral-100 border-b"
+      }`}>
       <div className="relative container mx-auto px-4 py-8 mt-20">
         <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
-          <div className="relative">
+          <div className="relative w-52 h-52">
             {user?.avatar ? (
               <Image
                 src={user.avatar}
                 alt="User Avatar"
-                width={212}
-                height={212}
-                className="rounded-full cursor-pointer"
+                width={208}
+                height={208}
+                className="rounded-full w-full h-full object-cover cursor-pointer"
                 onClick={() => setIsModalVisible(true)}
               />
             ) : (
               <div
-                className="w-52 h-52 rounded-full bg-red-500 flex items-center justify-center text-white text-6xl font-bold cursor-pointer"
+                className="w-52 h-52 rounded-full bg-rose-500 flex items-center justify-center text-white text-6xl font-bold cursor-pointer"
                 onClick={() => setIsModalVisible(true)}
               >
                 {userInitials}
@@ -86,40 +86,51 @@ const ProfilePage: React.FC = () => {
             )}
           </div>
           <div className="flex flex-col space-y-4">
-            <h1 className="text-3xl font-bold">{user?.username}</h1>
+            <h1 className="text-2xl font-bold">{user?.username}</h1>
+            <div className="flex space-x-6">
+              <span className="text-sm"><strong>{user?.followingCount}</strong> Following</span>
+              <span className="text-sm"><strong>{user?.followersCount}</strong> Followers</span>
+              <span className="text-sm"><strong>{user?.likesCount}</strong> Likes</span>
+            </div>
+            <p className="text-neutral-600 dark:text-neutral-400">{user?.bio || "No bio available"}</p>
             <div className="flex space-x-4">
               <button
                 onClick={() => setIsModalVisible(true)}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+                className="px-4 py-2 bg-rose-500 text-white rounded hover:bg-rose-600 transition duration-300"
               >
                 Edit Profile
               </button>
-              <button className="p-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300">
-                <FontAwesomeIcon icon={faShare} className="text-gray-600 dark:text-gray-300" />
+              <button className={`py-2 px-4 rounded transition duration-300 ${theme === "light"
+                ? "bg-neutral-100 hover:bg-neutral-200"
+                : "bg-neutral-700/90 hover:bg-neutral-600"
+                } focus:outline-none`}>
+                <FontAwesomeIcon icon={faShare} className={`${theme === "light"
+                  ? "text-neutral-600"
+                  : "text-neutral-100"
+                  }`} />
               </button>
-              <button className="p-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300">
-                <FontAwesomeIcon icon={faCog} className="text-gray-600 dark:text-gray-300" />
+              <button className={`py-2 px-4 rounded transition duration-300 ${theme === "light"
+                ? "bg-neutral-100 hover:bg-neutral-200"
+                : "bg-neutral-700/90 hover:bg-neutral-600"
+                } focus:outline-none`}>
+                <FontAwesomeIcon icon={faCog} className={`${theme === "light"
+                  ? "text-neutral-600"
+                  : "text-neutral-100"
+                  }`} />
               </button>
             </div>
-            <div className="flex space-x-6">
-              <span><strong>{user?.followingCount}</strong> Following</span>
-              <span><strong>{user?.followersCount}</strong> Followers</span>
-              <span><strong>{user?.likesCount}</strong> Likes</span>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">{user?.bio || "No bio available"}</p>
           </div>
         </div>
 
-        <div className="mt-8">
-          <div className="flex border-b border-gray-200 dark:border-gray-700">
+        <div className="mt-6">
+          <div className={`flex border-b ${theme === "light" ? "border-neutral-200" : "border-neutral-800"}`}>
             {tabs.map((tab) => (
               <button
                 key={tab.key}
-                className={`flex items-center space-x-2 px-4 py-2 ${
-                  activeTab === tab.key
-                    ? 'border-b-2 border-gray-700 text-gray-700'
-                    : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-                }`}
+                className={`flex items-center space-x-2 px-4 py-2 ${activeTab === tab.key
+                  ? `${theme === "light" ? "border-b-2 border-neutral-700 text-neutral-700" : "border-b-2 text-neutral-200 border-neutral-200"}`
+                  : `${theme === "light" ? "text-neutral-400 hover:text-neutral-400" : "text-neutral-500 hover:text-neutral-300"}`
+                  }`}
                 onClick={() => setActiveTab(tab.key)}
               >
                 <FontAwesomeIcon icon={tab.icon} />
@@ -127,7 +138,7 @@ const ProfilePage: React.FC = () => {
               </button>
             ))}
           </div>
-          <div className="mt-4 text-center text-gray-500 dark:text-gray-400">
+          <div className={`mt-4 text-center ${theme === "light" ? "text-neutral-400" : "text-neutral-500"}`}>
             {activeTab === "1" && "Upload your first video. Your videos will appear here."}
             {activeTab === "2" && "Favorite posts. Your favorite posts will appear here."}
             {activeTab === "3" && "No liked videos yet. Videos you liked will appear here."}

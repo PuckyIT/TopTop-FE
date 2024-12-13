@@ -116,7 +116,7 @@ const LoginPage: React.FC = () => {
       <form
         onSubmit={onFinish}
         className={`w-full max-w-lg p-8 space-y-6 rounded-xl shadow-lg ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+          theme === "dark" ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
         }`}
       >
         <div className="flex flex-col items-center space-y-2">
@@ -136,8 +136,8 @@ const LoginPage: React.FC = () => {
               required
               className={`mt-1 text-sm block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                 theme === "dark"
-                  ? "bg-gray-700 border-gray-600"
-                  : "bg-gray-50 border-gray-300"
+                  ? "bg-neutral-700 border-neutral-600"
+                  : "bg-neutral-50 border-neutral-300"
               }`}
               placeholder="Your Email"
             />
@@ -155,8 +155,8 @@ const LoginPage: React.FC = () => {
                 required
                 className={`block text-sm w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                   theme === "dark"
-                    ? "bg-gray-700 border-gray-600"
-                    : "bg-gray-50 border-gray-300"
+                    ? "bg-neutral-700 border-neutral-600"
+                    : "bg-neutral-50 border-neutral-300"
                 }`}
                 placeholder="Your Password"
               />
@@ -168,7 +168,7 @@ const LoginPage: React.FC = () => {
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    theme === "dark" ? "text-neutral-400" : "text-neutral-600"
                   }
                 />
               </button>
@@ -179,8 +179,8 @@ const LoginPage: React.FC = () => {
             disabled={loading}
             className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white ${
               loading
-                ? "bg-red-400 cursor-not-allowed"
-                : "bg-red-500 hover:bg-red-600"
+                ? "bg-rose-400 cursor-not-allowed"
+                : "bg-rose-500 hover:bg-rose-600"
             } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500`}
           >
             {loading ? "Signing In..." : "Sign In"}
@@ -206,7 +206,7 @@ const LoginPage: React.FC = () => {
             <div className="absolute inset-0 flex items-center">
               <div
                 className={`w-full border-t ${
-                  theme === "dark" ? "border-gray-600" : "border-gray-300"
+                  theme === "dark" ? "border-neutral-600" : "border-neutral-300"
                 }`}
               ></div>
             </div>
@@ -214,8 +214,8 @@ const LoginPage: React.FC = () => {
               <span
                 className={`px-2 ${
                   theme === "dark"
-                    ? "bg-gray-800 text-gray-400"
-                    : "bg-white text-gray-500"
+                    ? "bg-neutral-800 text-neutral-400"
+                    : "bg-white text-neutral-500"
                 }`}
               >
                 Sign in with
@@ -229,8 +229,8 @@ const LoginPage: React.FC = () => {
               onClick={handleGoogleLogin}
               className={`flex items-center justify-center w-12 h-12 rounded-full ${
                 theme === "dark"
-                  ? "bg-gray-700 hover:bg-gray-600"
-                  : "bg-gray-100 hover:bg-gray-200"
+                  ? "bg-neutral-700 hover:bg-neutral-600"
+                  : "bg-neutral-100 hover:bg-neutral-200"
               }`}
             >
               <Image
@@ -245,8 +245,8 @@ const LoginPage: React.FC = () => {
               onClick={handleGithubLogin}
               className={`flex items-center justify-center w-12 h-12 rounded-full ${
                 theme === "dark"
-                  ? "bg-gray-700 hover:bg-gray-600"
-                  : "bg-gray-100 hover:bg-gray-200"
+                  ? "bg-neutral-700 hover:bg-neutral-600"
+                  : "bg-neutral-100 hover:bg-neutral-200"
               }`}
             >
               <Image

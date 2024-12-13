@@ -64,8 +64,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           <motion.div
             className={`relative w-full max-w-md p-8 rounded-2xl shadow-xl transform ${
               theme === "dark"
-                ? "bg-gray-800 text-white"
-                : "bg-white text-gray-900"
+                ? "bg-neutral-800 text-white"
+                : "bg-white text-neutral-900"
             }`}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -74,8 +74,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           >
             <button
               onClick={onClose}
-              className={`absolute top-4 right-4 text-gray-500 hover:text-gray-700 ${
-                theme === "dark" ? "text-gray-400 hover:text-gray-200" : ""
+              className={`absolute top-4 right-4 text-neutral-500 hover:text-neutral-700 ${
+                theme === "dark" ? "text-neutral-400 hover:text-neutral-200" : ""
               }`}
             >
               <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
@@ -108,8 +108,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                     onChange={(e) => setNewPassword(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-1 ${
                       theme === "dark"
-                        ? "bg-gray-700 border-gray-600 focus:ring-blue-500"
-                        : "bg-gray-50 border-gray-300 focus:ring-blue-400"
+                        ? "bg-neutral-700 border-neutral-600 focus:ring-blue-500"
+                        : "bg-neutral-50 border-neutral-300 focus:ring-blue-400"
                     }`}
                     placeholder="Enter new password"
                     required
@@ -122,7 +122,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                     <FontAwesomeIcon
                       icon={showNewPassword ? faEyeSlash : faEye}
                       className={
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                        theme === "dark" ? "text-neutral-400" : "text-neutral-600"
                       }
                     />
                   </button>
@@ -143,8 +143,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:ring-1 ${
                       theme === "dark"
-                        ? "bg-gray-700 border-gray-600 focus:ring-blue-500"
-                        : "bg-gray-50 border-gray-300 focus:ring-blue-400"
+                        ? "bg-neutral-700 border-neutral-600 focus:ring-blue-500"
+                        : "bg-neutral-50 border-neutral-300 focus:ring-blue-400"
                     }`}
                     placeholder="Confirm new password"
                     required
@@ -157,7 +157,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                     <FontAwesomeIcon
                       icon={showConfirmPassword ? faEyeSlash : faEye}
                       className={
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                        theme === "dark" ? "text-neutral-400" : "text-neutral-600"
                       }
                     />
                   </button>
@@ -169,8 +169,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                   onClick={onClose}
                   className={`px-4 py-2 rounded-lg text-sm font-medium shadow-sm ${
                     theme === "dark"
-                      ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      ? "bg-neutral-700 text-neutral-300 hover:bg-neutral-600"
+                      : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
                   }`}
                 >
                   Cancel
@@ -180,8 +180,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                   disabled={loading}
                   className={`px-4 py-2 rounded-lg text-sm font-medium text-white shadow-lg transform ${
                     loading
-                      ? "bg-red-300 cursor-not-allowed"
-                      : "bg-red-500 hover:bg-red-600 hover:scale-105"
+                      ? "bg-rose-300 cursor-not-allowed"
+                      : "bg-rose-500 hover:bg-rose-600 hover:scale-105"
                   }`}
                 >
                   {loading ? "Submitting..." : "Submit"}

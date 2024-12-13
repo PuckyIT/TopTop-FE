@@ -75,8 +75,8 @@ const Sidebar = () => {
       id="sidebar"
       className={`w-64 max-h-screen theme-transition ${
         theme === "light"
-          ? "bg-white text-gray-800 border-b"
-          : "bg-black text-gray-100 border-b"
+          ? "bg-white text-neutral-800 border-b"
+          : "bg-black text-neutral-100 border-b"
       } p-4`}
     >
       <div className="space-y-2 mt-20 flex flex-col">
@@ -90,8 +90,8 @@ const Sidebar = () => {
                   ? "text-red-500 font-bold"
                   : "text-red-600 font-bold"
                 : theme === "dark"
-                ? "text-gray-400 hover:text-gray-200"
-                : "text-gray-800 hover:text-gray-600"
+                ? "text-neutral-400 hover:text-neutral-200"
+                : "text-neutral-800 hover:text-neutral-600"
             }`}
           >
             <FontAwesomeIcon icon={item.icon} className="text-lg w-8" />

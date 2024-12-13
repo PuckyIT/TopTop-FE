@@ -6,21 +6,21 @@ import { setUser } from "@/app/redux/userSlice";
 import axiosInstance from "@/untils/axiosInstance";
 import { toast } from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { User } from "@/app/types/user.types";
 
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  user: User;
   theme: string;
+  user: User;
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({
   isOpen,
   onClose,
-  user,
   theme,
+  user,
 }) => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState(user?.username || "");
@@ -53,7 +53,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       }
 
       const response = await axiosInstance.put(
-        `/users/profile/${user.id}`,
+        `/users/profile/${user._id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -74,17 +74,16 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 transition duration-300">
       <div
-        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
-        }`}
+        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${theme === "dark" ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
+          }`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Edit Profile</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-neutral-500 hover:text-neutral-700"
           >
             <FontAwesomeIcon icon={faTimes} />
           </button>
@@ -94,27 +93,28 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Avatar</label>
             <div className="flex items-center justify-center">
-              <div className="relative">
+              <div className="relative w-28 h-28">
                 {tempAvatar ? (
                   <Image
                     src={tempAvatar}
                     alt="User Avatar"
-                    width={96}
-                    height={96}
-                    className="rounded-full"
+                    width={112}
+                    height={112}
+                    className="rounded-full w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-24 h-24 rounded-full bg-red-500 flex items-center justify-center text-white text-3xl font-bold">
-                    {user?.email?.charAt(0).toUpperCase() || "U"}
+                  <div className="w-24 h-24 rounded-full bg-rose-500 flex items-center justify-center text-white text-3xl font-bold">
+                    {user?.email?.charAt(0).toUpperCase() || ""}
                   </div>
                 )}
                 <label
                   htmlFor="avatar-upload"
-                  className="absolute bottom-0 right-0 bg-white dark:bg-gray-700 rounded-full p-2 cursor-pointer"
+                  className={`absolute -bottom-1 right-0 cursor-pointer flex items-center justify-center w-9 h-9 rounded-full
+                    ${theme === "light" ? "bg-white border border-neutral-300" : "bg-neutral-700 border border-neutral-600"}`}
                 >
                   <FontAwesomeIcon
-                    icon={faUpload}
-                    className="text-gray-600 dark:text-gray-300"
+                    icon={faPencil}
+                    className={`${theme === "light" ? "text-neutral-400" : "text-neutral-200"}`}
                   />
                 </label>
                 <input
@@ -140,11 +140,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md ${
-                theme === "dark"
-                  ? "bg-gray-700 border-gray-600"
-                  : "bg-gray-50 border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-md ${theme === "dark"
+                ? "bg-neutral-700 border-neutral-600"
+                : "bg-neutral-50 border-neutral-300"
+                }`}
               required
             />
           </div>
@@ -159,13 +158,12 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
               onChange={(e) => setBio(e.target.value)}
               rows={4}
               maxLength={80}
-              className={`w-full px-3 py-2 border rounded-md ${
-                theme === "dark"
-                  ? "bg-gray-700 border-gray-600"
-                  : "bg-gray-50 border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-md ${theme === "dark"
+                ? "bg-neutral-700 border-neutral-600"
+                : "bg-neutral-50 border-neutral-300"
+                }`}
             />
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-neutral-500 mt-1">
               {bio.length}/80 characters
             </p>
           </div>
@@ -174,20 +172,18 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className={`px-4 py-2 rounded-md ${
-                theme === "dark"
-                  ? "bg-gray-700 hover:bg-gray-600"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
+              className={`px-4 py-2 rounded-md ${theme === "dark"
+                ? "bg-neutral-700 hover:bg-neutral-600"
+                : "bg-neutral-200 hover:bg-neutral-300"
+                }`}
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className={`px-4 py-2 rounded-md bg-blue-600 text-white ${
-                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
-              }`}
+              className={`px-4 py-2 rounded-md bg-rose-500 text-white transition duration-300 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-rose-400"
+                }`}
             >
               {loading ? "Saving..." : "Save"}
             </button>

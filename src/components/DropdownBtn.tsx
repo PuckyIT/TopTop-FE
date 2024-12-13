@@ -38,13 +38,13 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ items, theme }) => {
 
   const dropdownThemeClasses =
     theme === "light"
-      ? "bg-white text-gray-800 border-gray-200"
-      : "bg-gray-800 text-gray-200 border-gray-700";
+      ? "bg-white text-neutral-800 border-neutral-200"
+      : "bg-neutral-800 text-neutral-200 border-neutral-700";
 
   const dropdownItemThemeClasses =
     theme === "light"
-      ? "hover:bg-gray-100 text-gray-800"
-      : "hover:bg-gray-700 text-gray-200";
+      ? "hover:bg-neutral-100 text-neutral-800"
+      : "hover:bg-neutral-700 text-neutral-200";
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -52,7 +52,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ items, theme }) => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`p-2 rounded-full ${
-          theme === "light" ? "text-gray-500" : "text-gray-300"
+          theme === "light" ? "text-neutral-500" : "text-neutral-300"
         } hover:text-red-500 transition-colors duration-300`}
       >
         <FontAwesomeIcon icon={faEllipsisV} className="w-6 h-6" />

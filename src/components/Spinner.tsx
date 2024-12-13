@@ -38,7 +38,7 @@ const Spinner: React.FC<SpinnerProps> = ({ visible }) => {
         icon={faSpinner}
         spin
         size="3x"
-        className={theme === "dark" ? "text-white" : "text-gray-800"}
+        className={theme === "dark" ? "text-white" : "text-neutral-800"}
         style={{
           transition: "transform 0.3s ease-in-out", // Hiệu ứng xoay đồng bộ
           transform: visible ? "scale(1)" : "scale(0.5)", // Mặc định scale nhỏ hơn khi chưa hiển thị

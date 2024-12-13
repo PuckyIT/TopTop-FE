@@ -82,7 +82,7 @@ const HomePage: React.FC = () => {
       >
         <div
           ref={videoContainerRef}
-          className={`h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-hide theme-transition ${theme === "dark" ? "bg-black text-white" : "bg-white text-gray-800"
+          className={`h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-hide theme-transition ${theme === "dark" ? "bg-black text-white" : "bg-white text-neutral-800"
             }`}
         >
           {error ? (

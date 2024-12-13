@@ -51,11 +51,11 @@ const HeaderComponent: React.FC = () => {
 
   const userInitials = user?.email
     ? user.email
-        .split("@")[0]
-        .split(" ")
-        .map((word: string) => word[0])
-        .join("")
-        .toUpperCase()
+      .split("@")[0]
+      .split(" ")
+      .map((word: string) => word[0])
+      .join("")
+      .toUpperCase()
     : "U";
 
   const menuItems = [
@@ -80,11 +80,10 @@ const HeaderComponent: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full h-20 z-10 flex items-center justify-between px-5 theme-transition ${
-        theme === "light"
-          ? "bg-white text-gray-800 border-b"
-          : "bg-black text-gray-100 border-b"
-      }`}
+      className={`fixed top-0 left-0 w-full h-20 z-10 flex items-center justify-between px-5 theme-transition ${theme === "light"
+          ? "bg-white text-neutral-800 border-b"
+          : "bg-black text-neutral-100 border-b"
+        }`}
     >
       <div className="flex items-center w-1/6">
         <Link href="/home" className="flex items-center no-underline">
@@ -96,9 +95,8 @@ const HeaderComponent: React.FC = () => {
             className="transition-transform duration-300 hover:scale-90 cursor-pointer"
           />
           <span
-            className={`text-3xl font-semibold ${
-              theme === "light" ? "text-gray-800" : "text-gray-100"
-            } text-shadow`}
+            className={`text-3xl font-semibold ${theme === "light" ? "text-neutral-800" : "text-neutral-100"
+              } text-shadow`}
           >
             TopTop
           </span>
@@ -111,17 +109,15 @@ const HeaderComponent: React.FC = () => {
           placeholder="Search"
           value={searchTerm}
           onChange={handleSearchChange}
-          className={`w-full py-2 px-4 rounded-full text-base ${
-            theme === "light"
-              ? "bg-gray-100 text-gray-800 placeholder-gray-500"
-              : "bg-gray-700 text-gray-100 placeholder-gray-400"
-          } focus:outline-none focus:ring-2 focus:ring-red-500`}
+          className={`w-full py-2 px-4 rounded-full text-base ${theme === "light"
+              ? "bg-neutral-100 text-neutral-800 placeholder-gray-500"
+              : "bg-neutral-700 text-neutral-100 placeholder-gray-400"
+            } focus:outline-none focus:ring-2 focus:ring-red-500`}
         />
         <FontAwesomeIcon
           icon={faSearch}
-          className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${
-            theme === "light" ? "text-gray-400" : "text-gray-500"
-          } cursor-pointer hover:text-red-500 transition-colors duration-300`}
+          className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "light" ? "text-neutral-400" : "text-neutral-500"
+            } cursor-pointer hover:text-red-500 transition-colors duration-300`}
         />
       </div>
 
@@ -131,9 +127,8 @@ const HeaderComponent: React.FC = () => {
             <UploadVideoButton />
             <Link href="/profile" className="ml-4">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
-                  user?.avatar ? "" : "bg-red-500"
-                }`}
+                className={`w-10 h-10 max-w-10 max-h-10 rounded-full flex items-center justify-center text-white font-bold ${user?.avatar ? "" : "bg-rose-500"
+                  }`}
               >
                 {user?.avatar ? (
                   <Image
@@ -141,7 +136,7 @@ const HeaderComponent: React.FC = () => {
                     alt="User Avatar"
                     width={40}
                     height={40}
-                    className="rounded-full"
+                    className="rounded-full w-full h-full object-cover"
                   />
                 ) : (
                   userInitials
@@ -151,7 +146,7 @@ const HeaderComponent: React.FC = () => {
           </div>
         ) : (
           <Link href="/login">
-            <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-300">
+            <button className="bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-4 rounded transition duration-300">
               Log in
             </button>
           </Link>
