@@ -6,7 +6,6 @@ import { useTheme } from "@/app/context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
-  faHome,
   faGlobe,
   faMoon,
   faSignOutAlt,

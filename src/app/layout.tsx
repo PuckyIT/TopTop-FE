@@ -9,8 +9,10 @@ import { store } from "./redux/store";
 import { usePathname } from "next/navigation";
 import HeaderComponent from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import MobileHeader from "@/components/Header-Mobile";
+import MobileFooter from "@/components/Footer-Mobile";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const userRole = "user";
-
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -31,7 +32,7 @@ export default function RootLayout({
 
   // Kiểm tra xem có cần ẩn Header và Sidebar hay không
   const hideHeaderFooter =
-    currentPath && ["/login", "/signup"].includes(currentPath);
+    currentPath && ["/login", "/signup", "/home-mobile", "/profile-mobile"].includes(currentPath);
 
   return (
     <Provider store={store}>

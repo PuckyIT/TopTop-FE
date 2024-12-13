@@ -50,7 +50,7 @@ const UploadVideoButton: React.FC = () => {
 
     try {
       setUploading(true);
-      await axiosInstance.post("/videos/upload-video", formData, {
+      await axiosInstance.post("/users/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

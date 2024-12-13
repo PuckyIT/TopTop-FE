@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
   faPause,
-  faVolumeUp,
-  faVolumeMute,
   faUpLong,
   faHeart,
   faComment,
@@ -23,7 +21,7 @@ import { useVideoView } from "@/hooks/useVideoView";
 import axiosInstance from "@/untils/axiosInstance";
 import { useTheme } from "@/app/context/ThemeContext";
 
-const ShortVideo: React.FC<VideoType> = ({
+const ShortVideoMobile: React.FC<VideoType> = ({
   id,
   videoUrl,
   title,
@@ -39,13 +37,8 @@ const ShortVideo: React.FC<VideoType> = ({
   autoPlay = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [isMuted, setIsMuted] = useState(false);
-  const [showVolumeControl, setShowVolumeControl] = useState(false);
-  const [showSlider, setShowSlider] = useState(false);
   const [showPlayPauseButton, setShowPlayPauseButton] = useState(false);
   const [likes, setLikes] = useState(Number(initialLikes));
   const [saved, setSaved] = useState(Number(initialSaved));
@@ -91,6 +84,16 @@ const ShortVideo: React.FC<VideoType> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      if (autoPlay) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [autoPlay]);
+
   const handleSeek = (value: number | number[]) => {
     const seekValue = Array.isArray(value) ? value[0] : value;
     if (videoRef.current) {
@@ -99,40 +102,13 @@ const ShortVideo: React.FC<VideoType> = ({
     }
   };
 
-  const handleVolumeChange = (value: number | number[]) => {
-    const volumeValue = Array.isArray(value) ? value[0] : value;
-    if (videoRef.current) {
-      const newVolume = volumeValue / 100;
-      videoRef.current.volume = newVolume;
-      setVolume(newVolume);
-      setIsMuted(newVolume === 0);
-    }
-  };
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.volume = isMuted ? volume : 0;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const scrollToNextVideo = () => {
-    const nextVideo = document.querySelector(".next-video");
-    if (nextVideo) {
-      nextVideo.scrollIntoView({ behavior: "smooth" });
-    } else {
-      toast.error("No next video available!");
-    }
-  };
-
   const handlePlayPause = () => {
     if (videoRef.current) {
-      if (isPlaying) {
+      if (autoPlay) {
         videoRef.current.pause();
       } else {
         videoRef.current.play();
       }
-      setIsPlaying(!isPlaying);
     }
 
     // Hiển thị nút Play/Pause và đặt timer để ẩn nó
@@ -229,15 +205,10 @@ const ShortVideo: React.FC<VideoType> = ({
   };
 
   return (
-    <div className="relative h-5/6 mt-20 flex flex-row overflow-hidden w-screen justify-center right-40 bg-transparent transition ease-in-out duration-300">
+    <div className="relative w-screen h-screen max-h-[90vh] -top-8 flex flex-row overflow-hidden justify-center bg-transparent transition ease-in-out duration-300 z-40">
       <div
-        className="relative max-w-lg overflow-hidden rounded-2xl"
+        className="relative max-w-screen h-full overflow-hidden"
         onClick={handlePlayPause}
-        onMouseEnter={() => setShowVolumeControl(true)} // Hiện Volume Control khi hover vào video
-        onMouseLeave={() => {
-          setShowVolumeControl(false); // Ẩn Volume Control khi rời video
-          setShowSlider(false); // Ẩn Slider khi rời khỏi
-        }}
       >
         {/* Video Player */}
         <video
@@ -252,80 +223,14 @@ const ShortVideo: React.FC<VideoType> = ({
             toast.error("Cannot load video");
           }}
         />
-        {/* Video Controls */}
-        <div className="absolute -bottom-0 h-2 w-full bg-gradient-to-t from-black/50 to-transparent rounded-2xl" onClick={(e) => e.stopPropagation()}>
-          <Slider
-            min={0}
-            max={duration}
-            value={currentTime}
-            onChange={handleSeek}
-            trackStyle={{ backgroundColor: "#ff204e", height: 3 }}
-            railStyle={{ backgroundColor: "rgba(255,255,255,0.3)", height: 3 }}
-            handleStyle={{
-              opacity: 0,
-              cursor: "pointer",
-            }}
-          />
-        </div>
-
         {/* Video Info */}
-        <div className="absolute left-[4%] bottom-[12%] w-[90%] text-white text-opacity-90">
+        <div className="absolute left-3 bottom-5 w-full max-w-64 text-white text-opacity-90">
           <h3 className="text-lg font-bold">{username}<p className="text-xs text-neutral-400">{new Date(createdAt).toLocaleString()}</p></h3>
 
           {/* Video Title */}
           <p className="mt-2 text-base">{title}</p>
           <p className="text-sm">{desc}</p>
         </div>
-
-        {/* Volume Control */}
-        {showVolumeControl && (
-          <div
-            className={`absolute top-8 flex justify-between w-full px-3 transform z-10 ${showVolumeControl ? "opacity-100 scale-100" : "opacity-0 scale-90"
-              } transition-all duration-300`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              className="flex items-center relative"
-              onMouseEnter={() => setShowSlider(true)}
-              onMouseLeave={() => setShowSlider(false)}
-            >
-              <FontAwesomeIcon
-                icon={isMuted ? faVolumeMute : faVolumeUp}
-                onClick={toggleMute}
-                className="text-white text-opacity-90 text-xl px-2 cursor-pointer"
-              />
-              <div
-                className={`relative top-0 left-0 transform ${showSlider ? "opacity-100 scale-100" : "opacity-0 scale-90"
-                  } transition-all duration-300`}
-              >
-                {showSlider && (
-                  <div className="relative cursor-pointer w-16 ml-2">
-                    <Slider
-                      min={0}
-                      max={100}
-                      value={volume * 100}
-                      onChange={handleVolumeChange}
-                      trackStyle={{ backgroundColor: "white", height: 3 }}
-                      railStyle={{ backgroundColor: "gray", height: 3 }}
-                      handleStyle={{
-                        cursor: "pointer",
-                        border: "none",
-                        opacity: 1,
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div>
-              <FontAwesomeIcon
-                icon={faUpLong}
-                onClick={scrollToNextVideo}
-                className="text-white text-opacity-90 text-xl px-2 cursor-pointer"
-              />
-            </div>
-          </div>
-        )}
 
         {/* Play/Pause Button */}
         <div
@@ -336,13 +241,34 @@ const ShortVideo: React.FC<VideoType> = ({
             onClick={handlePlayPause}
             className="pointer-events-auto text-white text-opacity-90 text-2xl px-4 py-2 bg-black bg-opacity-50 rounded-full"
           >
-            <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+            <FontAwesomeIcon icon={autoPlay ? faPause : faPlay} />
           </button>
         </div>
       </div>
 
+      {/* Video Controls */}
+      <div className="absolute -bottom-[3px] h-3 w-full" onClick={(e) => e.stopPropagation()}>
+        <Slider
+          min={0}
+          max={duration}
+          value={currentTime}
+          onChange={handleSeek}
+          trackStyle={{ backgroundColor: "rgb(255,255,255)", height: 4 }}
+          railStyle={{ backgroundColor: "rgba(255,255,255,0.3)", height: 4 }}
+          handleStyle={{
+            backgroundColor: "rgb(255,255,255)",
+            height: 10,
+            width: 10,
+            border: "none",
+            bottom: 3,
+            opacity: 1,
+            cursor: "pointer",
+          }}
+        />
+      </div>
+
       {/* Right Sidebar */}
-      <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
+      <div className="absolute right-3 bottom-4 flex flex-col items-center space-y-6">
         <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
           <Image
             src={avatar}
@@ -399,4 +325,4 @@ const ShortVideo: React.FC<VideoType> = ({
   );
 };
 
-export default ShortVideo;
+export default ShortVideoMobile;

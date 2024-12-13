@@ -74,8 +74,8 @@ const Sidebar = () => {
     <div
       id="sidebar"
       className={`w-64 p-4 max-h-screen theme-transition transition ease-in-out duration-300 ${theme === "light"
-          ? "bg-white text-neutral-800 border-b"
-          : "bg-black text-neutral-100 border-b"
+        ? "bg-white text-neutral-800 border-b"
+        : "bg-black text-neutral-100 border-b"
         }`}
     >
       <div className="space-y-2 mt-20 flex flex-col">
@@ -83,7 +83,8 @@ const Sidebar = () => {
           <div
             key={item.key}
             onClick={() => handleMenuClick(item.key)}
-            className={`flex items-center text-left space-x-3 p-3 rounded-md cursor-pointer transition-all duration-200 ${selectedKey === item.key
+            className={`flex items-center text-left space-x-3 p-3 rounded-md cursor-pointer transition-all duration-200 
+              ${selectedKey === item.key
                 ? theme === "dark"
                   ? "text-red-500 font-bold"
                   : "text-red-600 font-bold"
