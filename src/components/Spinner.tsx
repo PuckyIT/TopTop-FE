@@ -45,7 +45,7 @@ const Spinner: React.FC<SpinnerProps> = ({ visible }) => {
           width: "3%",
         }}
       />
-      <p className="mt-5">
+      <p className={`mt-5 ${theme === "dark" ? "text-white" : "text-neutral-800"}`}>
         Waiting for Backend to load data:
         <Link href="https://toptop-be.onrender.com" className="text-blue-500">
           Click here

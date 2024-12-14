@@ -19,7 +19,6 @@ import { VideoType } from "@/app/types/video.types";
 import Image from "next/image";
 import { useVideoView } from "@/hooks/useVideoView";
 import axiosInstance from "@/untils/axiosInstance";
-import { useTheme } from "@/app/context/ThemeContext";
 import LoginNotificationModal from "../modal/LoginNotificationModal";
 import { useSelector } from "react-redux";
 
@@ -47,7 +46,6 @@ const ShortVideoMobile: React.FC<VideoType> = ({
   const [shared, setShared] = useState(Number(initialShared));
   const [isVideoLiked, setIsVideoLiked] = useState(false);
   const [isVideoSaved, setIsVideoSaved] = useState(false);
-  const { theme } = useTheme()
   const { handleTimeUpdate: handleViewCount } = useVideoView({
     videoId: id,
     viewThreshold: 0.8,
@@ -301,16 +299,16 @@ const ShortVideoMobile: React.FC<VideoType> = ({
             className="flex flex-col items-center space-y-1"
             onClick={handleLike}
           >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+             text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faHeart} className={`${isVideoLiked ? 'text-rose-500' : ''}`} />
             </div>
             <span className="text-xs font-bold text-foreground">{likes}</span>
           </button>
 
           <button className="flex flex-col items-center space-y-1">
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+            text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faComment} />
             </div>
             <span className="text-xs font-bold text-foreground">{commentCount}</span>
@@ -320,8 +318,8 @@ const ShortVideoMobile: React.FC<VideoType> = ({
             className="flex flex-col items-center space-y-1"
             onClick={handleSave}
           >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="{w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+          text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faBookmark} className={`${isVideoSaved ? 'text-yellow-500' : ''}`} />
             </div>
             <span className="text-xs font-bold text-foreground">{saved}</span>
@@ -331,8 +329,8 @@ const ShortVideoMobile: React.FC<VideoType> = ({
             className="flex flex-col items-center space-y-1"
             onClick={handleShare}
           >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+           text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faShare} />
             </div>
             <span className="text-xs font-bold text-foreground">{shared}</span>
@@ -356,8 +354,8 @@ const ShortVideoMobile: React.FC<VideoType> = ({
             onClick={() => {
               if (!modalTriggered) openLoginModal();
             }}          >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+           text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faHeart} className={`${isVideoLiked ? 'text-rose-500' : ''}`} />
             </div>
             <span className="text-xs font-bold text-foreground">{likes}</span>
@@ -369,8 +367,8 @@ const ShortVideoMobile: React.FC<VideoType> = ({
               if (!modalTriggered) openLoginModal();
             }}
           >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+           text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faComment} />
             </div>
             <span className="text-xs font-bold text-foreground">{commentCount}</span>
@@ -381,8 +379,8 @@ const ShortVideoMobile: React.FC<VideoType> = ({
             onClick={() => {
               if (!modalTriggered) openLoginModal();
             }}          >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+            text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faBookmark} className={`${isVideoSaved ? 'text-yellow-500' : ''}`} />
             </div>
             <span className="text-xs font-bold text-foreground">{saved}</span>
@@ -393,8 +391,8 @@ const ShortVideoMobile: React.FC<VideoType> = ({
             onClick={() => {
               if (!modalTriggered) openLoginModal();
             }}          >
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+           text-neutral-200 bg-neutral-400/20">
               <FontAwesomeIcon icon={faShare} />
             </div>
             <span className="text-xs font-bold text-foreground">{shared}</span>
