@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useTheme } from "@/app/context/ThemeContext";
+import Link from "next/link";
 
 interface SpinnerProps {
   visible: boolean;
@@ -24,9 +25,8 @@ const Spinner: React.FC<SpinnerProps> = ({ visible }) => {
 
   return (
     <div
-      className={`fixed flex-col inset-0 flex items-center justify-center z-50 h-screen w-screen ${
-        visible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`fixed flex-col inset-0 flex items-center justify-center z-50 h-screen w-screen ${visible ? "opacity-100" : "opacity-0"
+        }`}
       style={{
         backgroundColor:
           theme === "dark" ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
@@ -45,6 +45,16 @@ const Spinner: React.FC<SpinnerProps> = ({ visible }) => {
           width: "3%",
         }}
       />
+      <p className="mt-5">
+        Waiting for Backend to load data:
+        <Link href="https://toptop-be.onrender.com" className="text-blue-500">
+          Click here
+        </Link>
+
+      </p>
+      <p className={theme === "dark" ? "text-white" : "text-neutral-800"}>
+        The website is not yet complete.
+      </p>
     </div>
   );
 };

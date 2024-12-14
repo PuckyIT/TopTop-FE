@@ -6,18 +6,18 @@ import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import axiosInstance from '@/untils/axiosInstance';
 import { useRouter } from "next/navigation";
+import LoginNotificationModal from '../modal/LoginNotificationModal';
 
 const MobileFooter: React.FC = () => {
     const { theme } = useTheme();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState("1")
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const [title, setTitle] = useState<string>("");
     const [desc, setDesc] = useState<string>("");
     const [uploading, setUploading] = useState(false);
     const [selectedKey, setSelectedKey] = useState<string>("1");
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const user = useSelector((state: any) => state.user);
 
     const themeClasses = {
@@ -78,15 +78,14 @@ const MobileFooter: React.FC = () => {
 
     const handleMenuClick = (key: string) => {
         setSelectedKey(key);
-        switch (key) {
-            case "1":
-                router.push("/home-mobile");
-                break;
-            case "2":
+        if (key === "2") {
+            if (user?.isActive) {
                 router.push("/profile");
-                break;
-            default:
-                break;
+            } else {
+                setIsLoginModalOpen(true);
+            }
+        } else if (key === "1") {
+            router.push("/home-mobile");
         }
     };
 
@@ -97,7 +96,7 @@ const MobileFooter: React.FC = () => {
 
     return (
         <>
-            <div className="fixed h-screen w-screen z-30">
+            <div className="fixed h-screen w-screen z-40">
                 <div
                     className={`fixed w-full max-h-12 bottom-0 py-4 flex gap-x-10 justify-around items-center 
                     ${theme === "dark" ? "bg-black" : "bg-white"}`}>
@@ -199,6 +198,12 @@ const MobileFooter: React.FC = () => {
                         </div>
                     </div>
                 </div>
+            )}
+            {isLoginModalOpen && (
+                <LoginNotificationModal
+                    isOpen={isLoginModalOpen}
+                    onClose={() => setIsLoginModalOpen(false)}
+                />
             )}
         </>
     );

@@ -11,7 +11,7 @@ import { toast } from 'react-hot-toast'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTable, faBook, faHeart, faShare, faCog } from "@fortawesome/free-solid-svg-icons"
 import { User } from "../types/user.types"
-import EditProfileModal from "@/components/EditProfileModal"
+import EditProfileModal from "@/components/modal/EditProfileModal"
 import Spinner from "@/components/Spinner"
 
 const ProfilePage: React.FC = () => {

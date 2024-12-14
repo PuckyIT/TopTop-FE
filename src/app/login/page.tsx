@@ -9,9 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axiosInstance from "@/untils/axiosInstance";
 import toast from "react-hot-toast";
-import ForgotPasswordModal from "@/components/ForgotPasswordModal";
-import OtpModal from "@/components/OtpModal";
-import ResetPasswordModal from "@/components/ResetPasswordModal";
+import ForgotPasswordModal from "@/components/modal/ForgotPasswordModal";
+import OtpModal from "@/components/modal/OtpModal";
+import ResetPasswordModal from "@/components/modal/ResetPasswordModal";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -22,6 +24,7 @@ const LoginPage: React.FC = () => {
   const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
   const { theme } = useTheme();
 
   const onFinish = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +47,7 @@ const LoginPage: React.FC = () => {
       }
       );
       toast.success("Đăng nhập thành công!");
+      dispatch(setUser({ ...response.data, isActive: true }));
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("refreshToken", response.data.refreshToken);
@@ -115,8 +119,8 @@ const LoginPage: React.FC = () => {
     >
       <form
         onSubmit={onFinish}
-        className={`w-full max-w-lg p-8 space-y-6 rounded-xl shadow-lg ${theme === "dark" ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
-          }`}
+        className={`w-full max-w-lg p-8 space-y-6 rounded-xl shadow-lg 
+          ${theme === "dark" ? "bg-neutral-700 text-white" : "bg-neutral-50 text-neutral-800"}`}
       >
         <div className="flex flex-col items-center space-y-2">
           <Image src="/logo.png" alt="Logo" width={100} height={100} />
@@ -151,9 +155,10 @@ const LoginPage: React.FC = () => {
                 id="password"
                 name="password"
                 required
-                className={`block text-sm w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 ${theme === "dark"
-                  ? "bg-neutral-700 border-neutral-600"
-                  : "bg-neutral-50 border-neutral-300"
+                className={`block text-sm w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400 
+                  ${theme === "dark"
+                    ? "bg-neutral-700 border-neutral-600"
+                    : "bg-neutral-50 border-neutral-300"
                   }`}
                 placeholder="Your Password"
               />
@@ -208,8 +213,8 @@ const LoginPage: React.FC = () => {
             <div className="relative flex justify-center text-sm">
               <span
                 className={`px-2 ${theme === "dark"
-                  ? "bg-neutral-800 text-neutral-400"
-                  : "bg-white text-neutral-500"
+                  ? "bg-neutral-700 text-neutral-400"
+                  : "bg-neutral-50 text-neutral-500"
                   }`}
               >
                 Sign in with
@@ -222,8 +227,8 @@ const LoginPage: React.FC = () => {
               type="button"
               onClick={handleGoogleLogin}
               className={`flex items-center justify-center w-12 h-12 rounded-full ${theme === "dark"
-                ? "bg-neutral-700 hover:bg-neutral-600"
-                : "bg-neutral-100 hover:bg-neutral-200"
+                ? "bg-neutral-600 hover:bg-neutral-500"
+                : "bg-neutral-200 hover:bg-neutral-300"
                 }`}
             >
               <Image
@@ -237,8 +242,8 @@ const LoginPage: React.FC = () => {
               type="button"
               onClick={handleGithubLogin}
               className={`flex items-center justify-center w-12 h-12 rounded-full ${theme === "dark"
-                ? "bg-neutral-700 hover:bg-neutral-600"
-                : "bg-neutral-100 hover:bg-neutral-200"
+                ? "bg-neutral-600 hover:bg-neutral-500"
+                : "bg-neutral-200 hover:bg-neutral-300"
                 }`}
             >
               <Image

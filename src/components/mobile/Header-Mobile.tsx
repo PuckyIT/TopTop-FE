@@ -12,7 +12,7 @@ const MobileHeader: React.FC = () => {
     ]
 
     return (
-        <div className="fixed w-screen z-50">
+        <div className="fixed w-screen z-40">
             <div className={`fixed w-full max-h-12 top-2 py-4 flex justify-evenly items-center`}>
                 {tabs.map((tab) => (
                     <button

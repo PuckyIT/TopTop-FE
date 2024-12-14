@@ -22,6 +22,9 @@ import Image from "next/image";
 import { useVideoView } from "@/hooks/useVideoView";
 import axiosInstance from "@/untils/axiosInstance";
 import { useTheme } from "@/app/context/ThemeContext";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import LoginNotificationModal from "./modal/LoginNotificationModal";
 
 const ShortVideo: React.FC<VideoType> = ({
   id,
@@ -39,7 +42,6 @@ const ShortVideo: React.FC<VideoType> = ({
   autoPlay = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -52,11 +54,14 @@ const ShortVideo: React.FC<VideoType> = ({
   const [shared, setShared] = useState(Number(initialShared));
   const [isVideoLiked, setIsVideoLiked] = useState(false);
   const [isVideoSaved, setIsVideoSaved] = useState(false);
+  const user = useSelector((state: any) => state.user);
   const { theme } = useTheme()
   const { handleTimeUpdate: handleViewCount } = useVideoView({
     videoId: id,
     viewThreshold: 0.8,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTriggered, setModalTriggered] = useState(false);
 
   // Update video metadata and currentTime
   useEffect(() => {
@@ -125,14 +130,23 @@ const ShortVideo: React.FC<VideoType> = ({
     }
   };
 
+  useEffect(() => {
+    if (videoRef.current) {
+      if (autoPlay) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [autoPlay]);
+
   const handlePlayPause = () => {
     if (videoRef.current) {
-      if (isPlaying) {
+      if (autoPlay) {
         videoRef.current.pause();
       } else {
         videoRef.current.play();
       }
-      setIsPlaying(!isPlaying);
     }
 
     // Hiển thị nút Play/Pause và đặt timer để ẩn nó
@@ -145,8 +159,7 @@ const ShortVideo: React.FC<VideoType> = ({
 
     if (currentUser) {
       try {
-        const parsedUser = JSON.parse(currentUser);
-        const currentId = parsedUser.id;
+        const currentId = user?.id;
         if (currentId) {
           setIsVideoLiked(likedBy.includes(currentId));
           setIsVideoSaved(savedBy.includes(currentId));
@@ -228,15 +241,26 @@ const ShortVideo: React.FC<VideoType> = ({
     }
   };
 
+  const openLoginModal = () => {
+    setIsModalOpen(true);
+    setModalTriggered(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsModalOpen(false);
+    setModalTriggered(false);
+  };
+
   return (
-    <div className="relative h-5/6 mt-20 flex flex-row overflow-hidden w-screen justify-center right-40 bg-transparent transition ease-in-out duration-300">
+    <div className="relative h-5/6 mt-20 flex flex-row overflow-hidden w-screen justify-center right-40 
+    bg-transparent transition ease-in-out duration-300">
       <div
         className="relative max-w-lg overflow-hidden rounded-2xl"
         onClick={handlePlayPause}
-        onMouseEnter={() => setShowVolumeControl(true)} // Hiện Volume Control khi hover vào video
+        onMouseEnter={() => setShowVolumeControl(true)}
         onMouseLeave={() => {
-          setShowVolumeControl(false); // Ẩn Volume Control khi rời video
-          setShowSlider(false); // Ẩn Slider khi rời khỏi
+          setShowVolumeControl(false);
+          setShowSlider(false);
         }}
       >
         {/* Video Player */}
@@ -336,65 +360,138 @@ const ShortVideo: React.FC<VideoType> = ({
             onClick={handlePlayPause}
             className="pointer-events-auto text-white text-opacity-90 text-2xl px-4 py-2 bg-black bg-opacity-50 rounded-full"
           >
-            <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+            <FontAwesomeIcon icon={autoPlay ? faPause : faPlay} />
           </button>
         </div>
       </div>
 
       {/* Right Sidebar */}
-      <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
-        <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
-          <Image
-            src={avatar}
-            alt={'Avatar'}
-            width={48}
-            height={48}
-            className="object-cover h-full w-full"
-          />
-          <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
+      {user?.isActive ? (
+        <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
+          <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
+            <Image
+              src={avatar}
+              alt={'Avatar'}
+              width={48}
+              height={48}
+              className="object-cover h-full w-full"
+            />
+            <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
+          </div>
+
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={handleLike}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faHeart} className={`${isVideoLiked ? 'text-rose-500' : ''}`} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{likes}</span>
+          </button>
+
+          <button className="flex flex-col items-center space-y-1">
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faComment} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{commentCount}</span>
+          </button>
+
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={handleSave}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faBookmark} className={`${isVideoSaved ? 'text-yellow-500' : ''}`} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{saved}</span>
+          </button>
+
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={handleShare}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faShare} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{shared}</span>
+          </button>
         </div>
-
-        <button
-          className="flex flex-col items-center space-y-1"
-          onClick={handleLike}
-        >
-          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
-            <FontAwesomeIcon icon={faHeart} className={`${isVideoLiked ? 'text-rose-500' : ''}`} />
+      ) : (
+        <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
+          <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
+            <Image
+              src={avatar}
+              alt={'Avatar'}
+              width={48}
+              height={48}
+              className="object-cover h-full w-full"
+            />
+            <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
           </div>
-          <span className="text-xs font-bold text-foreground">{likes}</span>
-        </button>
 
-        <button className="flex flex-col items-center space-y-1">
-          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
-            <FontAwesomeIcon icon={faComment} />
-          </div>
-          <span className="text-xs font-bold text-foreground">{commentCount}</span>
-        </button>
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={() => {
+              if (!modalTriggered) openLoginModal();
+            }}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faHeart} className={`${isVideoLiked ? 'text-rose-500' : ''}`} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{likes}</span>
+          </button>
 
-        <button
-          className="flex flex-col items-center space-y-1"
-          onClick={handleSave}
-        >
-          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
-            <FontAwesomeIcon icon={faBookmark} className={`${isVideoSaved ? 'text-yellow-500' : ''}`} />
-          </div>
-          <span className="text-xs font-bold text-foreground">{saved}</span>
-        </button>
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={() => {
+              if (!modalTriggered) openLoginModal();
+            }}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faComment} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{commentCount}</span>
+          </button>
 
-        <button
-          className="flex flex-col items-center space-y-1"
-          onClick={handleShare}
-        >
-          <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
-            ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
-            <FontAwesomeIcon icon={faShare} />
-          </div>
-          <span className="text-xs font-bold text-foreground">{shared}</span>
-        </button>
-      </div>
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={() => {
+              if (!modalTriggered) openLoginModal();
+            }}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faBookmark} className={`${isVideoSaved ? 'text-yellow-500' : ''}`} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{saved}</span>
+          </button>
+
+          <button
+            className="flex flex-col items-center space-y-1"
+            onClick={() => {
+              if (!modalTriggered) openLoginModal();
+            }}
+          >
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full text-2xl text-foreground
+              ${theme === "light" ? "text-neutral-900 bg-neutral-300/20" : "text-neutral-200 bg-neutral-400/20"}`}>
+              <FontAwesomeIcon icon={faShare} />
+            </div>
+            <span className="text-xs font-bold text-foreground">{shared}</span>
+          </button>
+        </div>
+      )}
+      {isModalOpen && (
+        <LoginNotificationModal
+          isOpen={isModalOpen}
+          onClose={closeLoginModal}
+        />
+      )}
     </div>
   );
 };

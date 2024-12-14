@@ -22,16 +22,14 @@ const HeaderComponent: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       dispatch(setUser(JSON.parse(storedUser)));
-      setIsLoggedIn(true);
-    }
-  }, [dispatch]);
+    };
+  }, [dispatch, user.isActive]);
 
   const handleLogout = async () => {
     try {
@@ -122,7 +120,7 @@ const HeaderComponent: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {isLoggedIn ? (
+        {user?.isActive ? (
           <div className="flex items-center">
             <UploadVideoButton />
             <Link href="/profile" className="ml-4">

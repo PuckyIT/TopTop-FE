@@ -7,9 +7,9 @@ import axiosInstance from "@/untils/axiosInstance";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { VideoType, VideoResponse } from "../types/video.types";
-import ShortVideoMobile from "@/components/ShortVideo-Mobile";
-import MobileHeader from "@/components/Header-Mobile";
-import MobileFooter from "@/components/Footer-Mobile";
+import ShortVideoMobile from "@/components/mobile/ShortVideo-Mobile";
+import MobileHeader from "@/components/mobile/Header-Mobile";
+import MobileFooter from "@/components/mobile/Footer-Mobile";
 
 const HomePageMobile: React.FC = () => {
   const { theme } = useTheme();
