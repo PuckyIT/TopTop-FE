@@ -31,13 +31,13 @@ const UploadVideoButton: React.FC = () => {
 
   const handleVideoUpload = async () => {
     if (!title || !videoFile) {
-      toast.error("Vui lòng nhập tiêu đề và chọn video để tải lên.");
+      toast.error("Enter a title and select a video.");
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-      toast.error("Bạn cần đăng nhập để tải video.");
+      toast.error("You need to log in to upload a video.");
       return;
     }
 
@@ -55,13 +55,13 @@ const UploadVideoButton: React.FC = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success("Tải video thành công!");
+      toast.success("Upload video successfully!");
       setTitle("");
       setDesc("");
       setVideoFile(null);
       setIsModalOpen(false);
     } catch {
-      toast.error("Tải video thất bại.");
+      toast.error("Error uploading video.");
     } finally {
       setUploading(false);
     }

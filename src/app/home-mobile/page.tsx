@@ -79,7 +79,7 @@ const HomePageMobile: React.FC = () => {
     <AbilityProvider role="user">
       <Spinner visible={loading} />
       <div
-        className={`min-h-screen w-screen theme-transition transition ease-in-out duration-300 z-50
+        className={`relative h-screen w-screen theme-transition transition ease-in-out duration-300 z-50
         ${theme === "dark"
             ? "bg-black"
             : "bg-white"
@@ -89,7 +89,7 @@ const HomePageMobile: React.FC = () => {
         <div
           ref={videoContainerRef}
           className={`min-h-screen h-screen w-screen overflow-y-scroll snap-y snap-mandatory scrollbar-hide theme-transition 
-            transition ease-in-out duration-300 
+            transition ease-in-out duration-300 pt-0
             ${theme === "dark"
               ? "bg-black text-white"
               : "bg-white text-neutral-800"
@@ -105,23 +105,6 @@ const HomePageMobile: React.FC = () => {
                 key={index}
                 className="h-full w-full flex justify-center items-center snap-start"
               >
-                {/* <ShortVideoMobile
-                  id={video.id}
-                  videoUrl={video.videoUrl}
-                  title={video.title}
-                  desc={video.desc}
-                  commentCount={video.commentCount}
-                  likes={video.likes}
-                  views={video.views}
-                  isPublic={video.isPublic}
-                  saved={video.saved}
-                  shared={video.shared}
-                  createdAt={video.createdAt}
-                  likedBy={video.likedBy}
-                  savedBy={video.savedBy}
-                  user={video.user}
-                  autoPlay={index === currentVideoIndex}
-                /> */}
                 <ShortVideoMobile
                   id={video.id}
                   videoUrl={video.videoUrl}

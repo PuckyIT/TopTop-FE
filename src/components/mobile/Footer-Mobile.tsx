@@ -26,8 +26,8 @@ const MobileFooter: React.FC = () => {
         borderColor: theme === "dark" ? "border-neutral-600" : "border-neutral-300",
         button:
             theme === "dark"
-                ? "bg-rose-600 hover:bg-rose-700"
-                : "bg-rose-500 hover:bg-rose-600",
+                ? "bg-rose-600"
+                : "bg-rose-500",
     };
 
     const handleUploadClick = () => setIsModalOpen(true);
@@ -40,13 +40,13 @@ const MobileFooter: React.FC = () => {
 
     const handleVideoUpload = async () => {
         if (!title || !videoFile) {
-            toast.error("Vui lòng nhập tiêu đề và chọn video để tải lên.");
+            toast.error("Enter a title and select a video.");
             return;
         }
 
         const token = localStorage.getItem("token");
         if (!token) {
-            toast.error("Bạn cần đăng nhập để tải video.");
+            toast.error("You need to log in to upload a video.");
             return;
         }
 
@@ -64,13 +64,13 @@ const MobileFooter: React.FC = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            toast.success("Tải video thành công!");
+            toast.success("Video uploaded successfully!");
             setTitle("");
             setDesc("");
             setVideoFile(null);
             setIsModalOpen(false);
         } catch {
-            toast.error("Tải video thất bại.");
+            toast.error("An error occurred while uploading the video.");
         } finally {
             setUploading(false);
         }
@@ -99,15 +99,15 @@ const MobileFooter: React.FC = () => {
             <div className="fixed h-screen w-screen z-40">
                 <div
                     className={`fixed w-full max-h-12 bottom-0 py-4 flex gap-x-10 justify-around items-center 
-                    ${theme === "dark" ? "bg-black" : "bg-white"}`}>
+                    ${theme === "dark" ? "bg-black" : "bg-black"}`}>
                     {tabs.map((tab) => (
                         <button
                             key={tab.key}
                             onClick={() => handleMenuClick(tab.key)}
                             className={`flex flex-col justify-center items-center px-4 py-2 text-xs gap-1
                              ${selectedKey === tab.key
-                                    ? `${theme === "light" ? "text-neutral-700" : " text-neutral-200 "}`
-                                    : `${theme === "light" ? "text-neutral-400 " : "text-neutral-600 "}`
+                                    ? `${theme === "light" ? "text-neutral-200" : " text-neutral-200 "}`
+                                    : `${theme === "light" ? "text-neutral-600 " : "text-neutral-600 "}`
                                 }`}
                         >
                             <FontAwesomeIcon icon={tab.icon} className='text-xl' />
@@ -178,13 +178,14 @@ const MobileFooter: React.FC = () => {
                                 type="file"
                                 accept="video/*"
                                 onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                                className="block w-full text-sm text-neutral-500 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-rose-100 file:text-red-700 hover:file:bg-rose-200 transition"
+                                className="block w-full text-sm text-neutral-500 file:py-2 file:px-4 file:rounded 
+                                file:border-0 file:font-semibold file:bg-rose-100 file:text-red-700 transition"
                             />
                         </div>
                         <div className="flex justify-end space-x-2">
                             <button
                                 onClick={handleCancel}
-                                className={`py-2 px-4 rounded font-semibold border ${themeClasses.borderColor} ${themeClasses.color} hover:bg-neutral-100 transition`}
+                                className={`py-2 px-4 rounded font-semibold border ${themeClasses.borderColor} ${themeClasses.color} transition`}
                             >
                                 Cancel
                             </button>
