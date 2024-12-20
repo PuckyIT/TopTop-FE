@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -26,6 +26,7 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { theme } = useTheme();
+  const user = useSelector((state: any) => state.user);
 
   const onFinish = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,11 +103,11 @@ const LoginPage: React.FC = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://top-top-be.vercel.app/api/v1/auth/google";
+    window.location.href = "https://toptop-be.onrender.com/api/v1/auth/google";
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "https://top-top-be.vercel.app/api/v1/auth/github";
+    window.location.href = "https://toptop-be.onrender.com/api/v1/auth/github";
   };
 
   return (

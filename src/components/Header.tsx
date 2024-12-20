@@ -134,10 +134,14 @@ const HeaderComponent: React.FC = () => {
                     alt="User Avatar"
                     width={40}
                     height={40}
-                    className="rounded-full w-full h-full object-cover"
+                    className="rounded-full w-full h-full object-cover cursor-pointer"
                   />
                 ) : (
-                  userInitials
+                  <div
+                    className="w-10 h-10 rounded-full bg-amber-900 flex items-center justify-center text-white text-lg font-bold cursor-pointer"
+                  >
+                    {userInitials}
+                  </div>
                 )}
               </div>
             </Link>

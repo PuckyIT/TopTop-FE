@@ -8,14 +8,18 @@ import ShortVideo from "@/components/ShortVideo";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { VideoType, VideoResponse } from "../types/video.types";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 const HomePage: React.FC = () => {
+  const dispatch = useDispatch();
   const { theme } = useTheme();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [videos, setVideos] = useState<VideoType[]>([]);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const userData = JSON.parse(localStorage.getItem("user") as string);
 
   const handleScroll = () => {
     const videoContainer = videoContainerRef.current;
@@ -32,13 +36,22 @@ const HomePage: React.FC = () => {
 
   const fetchUserVideos = async () => {
     try {
-      const response = await axiosInstance.get<VideoResponse>(`users/all`);
+      const response = await axiosInstance.get<VideoResponse>(`videos/all`);
       return response.data.videos;
     } catch (error) {
       console.error("Error fetching videos:", error);
       throw error;
     }
   };
+
+  async function following() {
+    try {
+      const response = await axiosInstance.get(`/users/${userData.id}/following`);
+      localStorage.setItem("following", JSON.stringify(response.data.following.map((user: any) => user._id)));
+    } catch (error) {
+      console.error("Error fetching following:", error);
+    }
+  }
 
   useEffect(() => {
     const loadVideos = async () => {
@@ -56,7 +69,7 @@ const HomePage: React.FC = () => {
         setLoading(false);
       }
     };
-
+    following();
     loadVideos();
   }, []);
 
@@ -116,7 +129,7 @@ const HomePage: React.FC = () => {
                   createdAt={video.createdAt}
                   likedBy={video.likedBy}
                   savedBy={video.savedBy}
-                  user={video.user}
+                  userId={video.userId}
                   autoPlay={index === currentVideoIndex}
                 />
               </div>

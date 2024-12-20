@@ -16,16 +16,6 @@ const UploadVideoButton: React.FC = () => {
   const user = useSelector((state: any) => state.user);
   const { theme } = useTheme();
 
-  const themeClasses = {
-    background: theme === "dark" ? "bg-neutral-800" : "bg-white",
-    color: theme === "dark" ? "text-white" : "text-neutral-900",
-    borderColor: theme === "dark" ? "border-neutral-600" : "border-neutral-300",
-    button:
-      theme === "dark"
-        ? "bg-rose-600 hover:bg-rose-700"
-        : "bg-rose-500 hover:bg-rose-600",
-  };
-
   const handleUploadClick = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
 
@@ -42,7 +32,7 @@ const UploadVideoButton: React.FC = () => {
     }
 
     const formData = new FormData();
-    formData.append("video", videoFile);
+    formData.append("videoFile", videoFile);
     formData.append("title", title);
     formData.append("desc", desc);
     formData.append("userId", user.id);
@@ -71,7 +61,9 @@ const UploadVideoButton: React.FC = () => {
     <>
       <button
         onClick={handleUploadClick}
-        className={`flex items-center justify-center gap-2 py-2 px-4 rounded font-semibold ${themeClasses.button} text-white transition duration-300`}
+        className={`flex items-center justify-center gap-2 py-2 px-4 rounded font-semibold ${theme === "dark"
+          ? "bg-rose-600"
+          : "bg-rose-500"} text-white transition duration-300`}
         disabled={uploading}
       >
         {uploading ? (
@@ -86,9 +78,8 @@ const UploadVideoButton: React.FC = () => {
           <>
             <FontAwesomeIcon
               icon={faUpload}
-              className={`w-4 h-4 ${
-                theme === "light" ? "text-neutral-100" : "text-white"
-              }`}
+              className={`w-4 h-4 ${theme === "light" ? "text-neutral-100" : "text-white"
+                }`}
             />
             Upload
           </>
@@ -98,16 +89,22 @@ const UploadVideoButton: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div
-            className={`w-11/12 max-w-lg p-6 rounded-lg shadow-lg ${themeClasses.background} transform transition-all duration-300`}
+            className={`w-11/12 max-w-lg p-6 rounded-lg shadow-lg ${theme === "dark"
+              ? "bg-neutral-800 text-white"
+              : "bg-white text-neutral-900"} transform transition-all duration-300`}
           >
             <h2
-              className={`text-2xl font-bold mb-6 text-center ${themeClasses.color}`}
+              className={`text-2xl font-bold mb-6 text-center ${theme === "dark"
+                ? "text-white" : "text-neutral-900"
+                }`}
             >
               Upload Video
             </h2>
             <div className="mb-4">
               <label
-                className={`block text-sm font-medium mb-1 ${themeClasses.color}`}
+                className={`block text-sm font-medium mb-1 ${theme === "dark"
+                  ? "text-white" : "text-neutral-900"
+                  }`}
               >
                 Video Title
               </label>
@@ -116,12 +113,16 @@ const UploadVideoButton: React.FC = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter title"
-                className={`w-full p-3 rounded border focus:outline-none focus:ring-1 ${themeClasses.borderColor} focus:ring-slate-400`}
+                className={`w-full p-3 rounded border focus:outline-none focus:ring-1 ${theme === "dark"
+                  ? "bg-neutral-800 text-white"
+                  : "bg-white text-neutral-900"} focus:ring-slate-400`}
               />
             </div>
             <div className="mb-4">
               <label
-                className={`block text-sm font-medium mb-1 ${themeClasses.color}`}
+                className={`block text-sm font-medium mb-1 ${theme === "dark"
+                  ? "text-white"
+                  : "text-neutral-900"}`}
               >
                 Video Description
               </label>
@@ -130,12 +131,16 @@ const UploadVideoButton: React.FC = () => {
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 placeholder="Enter description"
-                className={`w-full p-3 rounded border focus:outline-none focus:ring-1 ${themeClasses.borderColor} focus:ring-slate-400`}
+                className={`w-full p-3 rounded border focus:outline-none focus:ring-1 ${theme === "dark"
+                  ? "bg-neutral-800 text-white"
+                  : "bg-white text-neutral-900"} focus:ring-slate-400`}
               />
             </div>
             <div className="mb-6">
               <label
-                className={`block text-sm font-medium mb-1 ${themeClasses.color}`}
+                className={`block text-sm font-medium mb-1 ${theme === "dark"
+                  ? "text-white"
+                  : "text-neutral-900"}`}
               >
                 Upload Video
               </label>
@@ -149,20 +154,24 @@ const UploadVideoButton: React.FC = () => {
             <div className="flex justify-end space-x-2">
               <button
                 onClick={handleCancel}
-                className={`py-2 px-4 rounded font-semibold border ${themeClasses.borderColor} ${themeClasses.color} hover:bg-neutral-100 transition`}
+                className={`py-2 px-4 rounded font-semibold border transition ${theme === "dark"
+                  ? "border-neutral-600 text-white hover:bg-neutral-800"
+                  : "border-neutral-400 text-neutral-900 hover:bg-neutral-200"}`}
               >
                 Cancel
               </button>
               <button
                 onClick={handleVideoUpload}
                 disabled={uploading}
-                className={`py-2 px-4 rounded font-semibold ${themeClasses.button} text-white transition`}
+                className={`py-2 px-4 rounded font-semibold text-white transition ${theme === "dark"
+                  ? "bg-rose-600 hover:bg-rose-700"
+                  : "bg-rose-500 hover:bg-rose-600"}`}
               >
                 {uploading ? "Uploading..." : "Upload"}
               </button>
             </div>
           </div>
-        </div>
+        </div >
       )}
     </>
   );

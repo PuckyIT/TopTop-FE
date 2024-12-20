@@ -77,7 +77,7 @@ const ProfilePage: React.FC = () => {
               />
             ) : (
               <div
-                className="w-52 h-52 rounded-full bg-rose-500 flex items-center justify-center text-white text-6xl font-bold cursor-pointer"
+                className="w-52 h-52 rounded-full bg-amber-900 flex items-center justify-center text-white text-8xl font-bold cursor-pointer"
                 onClick={() => setIsModalVisible(true)}
               >
                 {userInitials}
@@ -154,6 +154,7 @@ const ProfilePage: React.FC = () => {
           userUsername={user?.username}
           userBio={user?.bio}
           theme={theme}
+          userInitials={userInitials}
         />
       )}
     </div>

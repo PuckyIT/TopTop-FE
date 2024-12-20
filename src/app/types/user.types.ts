@@ -14,4 +14,6 @@ export type User = {
     likesCount: number;
     avatar: string;
     username: string;
+    followers?: [];
+    following?: [];
 };

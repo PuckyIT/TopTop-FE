@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 const axiosInstance = axios.create({
 
   // baseURL: 'http://localhost:8080',
-  baseURL: 'https://toptop-be.onrender.com',
+  baseURL: 'https://toptop-be.onrender.com/api/v1',
 });
 
 // Interceptor cho request để thêm token vào header
@@ -46,7 +46,7 @@ axiosInstance.interceptors.response.use(
       try {
         // Gửi yêu cầu refresh token đến API
         // const { data } = await axios.post('http://localhost:8080/auth/refresh-token', {
-        const { data } = await axios.post('https://toptop-be.onrender.com/auth/refresh-token', {
+        const { data } = await axios.post('https://toptop-be.onrender.com/api/v1/auth/refresh-token', {
           refreshToken,
         });
 

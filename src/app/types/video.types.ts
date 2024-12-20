@@ -1,5 +1,4 @@
 // types/video.types.ts
-import { User } from "./user.types";
 
 export type VideoType = {
     id: string;
@@ -18,9 +17,9 @@ export type VideoType = {
     sharedBy?: string[];
     createdAt: string;
     updatedAt?: string;
-    user: {
+    userId: {
         avatar: string;
-        id: string;
+        _id: string;
         username: string;
     };
     autoPlay?: boolean;

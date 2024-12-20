@@ -22,9 +22,9 @@ import Image from "next/image";
 import { useVideoView } from "@/hooks/useVideoView";
 import axiosInstance from "@/untils/axiosInstance";
 import { useTheme } from "@/app/context/ThemeContext";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import LoginNotificationModal from "./modal/LoginNotificationModal";
+import { setUser } from "@/app/redux/userSlice";
 
 const ShortVideo: React.FC<VideoType> = ({
   id,
@@ -38,9 +38,10 @@ const ShortVideo: React.FC<VideoType> = ({
   createdAt,
   likedBy = [],
   savedBy = [],
-  user: { id: userId, username, avatar },
+  userId,
   autoPlay = false,
 }) => {
+  const dispatch = useDispatch();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -56,6 +57,8 @@ const ShortVideo: React.FC<VideoType> = ({
   const [isVideoSaved, setIsVideoSaved] = useState(false);
   const user = useSelector((state: any) => state.user);
   const { theme } = useTheme()
+  const following = localStorage.getItem("following");
+
   const { handleTimeUpdate: handleViewCount } = useVideoView({
     videoId: id,
     viewThreshold: 0.8,
@@ -155,20 +158,28 @@ const ShortVideo: React.FC<VideoType> = ({
   };
 
   useEffect(() => {
-    const currentUser = localStorage.getItem("user");
-
-    if (currentUser) {
+    const userData = JSON.parse(localStorage.getItem("user") as string);
+    if (userData) {
       try {
-        const currentId = user?.id;
-        if (currentId) {
-          setIsVideoLiked(likedBy.includes(currentId));
-          setIsVideoSaved(savedBy.includes(currentId));
-        }
+        setIsVideoLiked(likedBy.includes(userData.id));
+        setIsVideoSaved(savedBy.includes(userData.id));
       } catch (error) {
         console.error("Error parsing user data from localStorage:", error);
       }
     }
-  }, [userId]);
+  }, []);
+
+  const handleFollow = async () => {
+    try {
+      await axiosInstance.post(`/users/${userId._id}/follow`);
+      toast.success('Followed successfully!');
+      const updatedFollowing = [...user.following, userId._id];
+      dispatch(setUser({ ...user, following: updatedFollowing }));
+    } catch (error) {
+      toast.error('Error following user');
+      console.error('Error following user:', error);
+    }
+  };
 
   const handleLike = async () => {
     try {
@@ -294,7 +305,7 @@ const ShortVideo: React.FC<VideoType> = ({
 
         {/* Video Info */}
         <div className="absolute left-[4%] bottom-[12%] w-[90%] text-white text-opacity-90">
-          <h3 className="text-lg font-bold">{username}<p className="text-xs text-neutral-400">{new Date(createdAt).toLocaleString()}</p></h3>
+          <h3 className="text-lg font-bold">{userId.username}<p className="text-xs text-neutral-400">{new Date(createdAt).toLocaleString()}</p></h3>
 
           {/* Video Title */}
           <p className="mt-2 text-base">{title}</p>
@@ -370,14 +381,22 @@ const ShortVideo: React.FC<VideoType> = ({
         <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
           <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
             <Image
-              src={avatar}
+              src={userId.avatar}
               alt={'Avatar'}
               width={48}
               height={48}
               className="object-cover h-full w-full"
             />
-            <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
+            {userId._id !== user._id && !following?.includes(userId._id) && (
+              <p
+                className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full"
+                onClick={handleFollow}
+              >
+                +
+              </p>
+            )}
           </div>
+
 
           <button
             className="flex flex-col items-center space-y-1"
@@ -424,7 +443,7 @@ const ShortVideo: React.FC<VideoType> = ({
         <div className="relative -right-3 bottom-0 flex flex-col items-center space-y-6 top-60">
           <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
             <Image
-              src={avatar}
+              src={userId.avatar}
               alt={'Avatar'}
               width={48}
               height={48}

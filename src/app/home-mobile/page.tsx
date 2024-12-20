@@ -34,7 +34,7 @@ const HomePageMobile: React.FC = () => {
 
   const fetchUserVideos = async () => {
     try {
-      const response = await axiosInstance.get<VideoResponse>(`users/all`);
+      const response = await axiosInstance.get<VideoResponse>(`videos/all`);
       return response.data.videos;
     } catch (error) {
       console.error("Error fetching videos:", error);
@@ -119,7 +119,7 @@ const HomePageMobile: React.FC = () => {
                   createdAt={video.createdAt}
                   likedBy={video.likedBy}
                   savedBy={video.savedBy}
-                  user={video.user}
+                  userId={video.userId}
                   autoPlay={index === currentVideoIndex}
                 />
               </div>

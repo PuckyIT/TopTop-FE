@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import Image from "next/image";
@@ -17,6 +18,7 @@ interface EditProfileModalProps {
   userId: string;
   userUsername: string;
   userBio: string;
+  userInitials: string;
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({
@@ -27,14 +29,13 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   userId,
   userUsername,
   userBio,
+  userInitials,
 }) => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState(userUsername || "");
   const [bio, setBio] = useState(userBio || "");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [tempAvatar, setTempAvatar] = useState<string | undefined>(
-    userAvatar
-  );
+  const [tempAvatar, setTempAvatar] = useState<string | undefined>(userAvatar);
   const [loading, setLoading] = useState(false);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,8 +120,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                       className="rounded-full w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-full bg-rose-500 flex items-center justify-center text-white text-3xl font-bold">
-                      {tempAvatar}
+                    <div className="w-28 h-28 rounded-full bg-amber-900 flex items-center justify-center text-white text-5xl font-bold">
+                      {userInitials}
                     </div>
                   )}
                   <label

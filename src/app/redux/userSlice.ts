@@ -17,6 +17,8 @@ const initialState = {
   likesCount: 0,
   avatar: '',
   username: '',
+  followers: [],
+  following: [],
 };
 
 // Tạo slice cho người dùng
