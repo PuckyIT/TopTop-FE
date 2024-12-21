@@ -21,7 +21,8 @@ import { useVideoView } from "@/hooks/useVideoView";
 import axiosInstance from "@/untils/axiosInstance";
 import { useTheme } from "@/app/context/ThemeContext";
 import LoginNotificationModal from "../modal/LoginNotificationModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@/app/redux/userSlice";
 
 const ShortVideoMobile: React.FC<VideoType> = ({
   id,
@@ -35,7 +36,7 @@ const ShortVideoMobile: React.FC<VideoType> = ({
   createdAt,
   likedBy = [],
   savedBy = [],
-  user: { id: userId, username, avatar },
+  userId,
   autoPlay = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -52,9 +53,11 @@ const ShortVideoMobile: React.FC<VideoType> = ({
     videoId: id,
     viewThreshold: 0.8,
   });
+  const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTriggered, setModalTriggered] = useState(false);
+  const following = localStorage.getItem("following");
 
   // Update video metadata and currentTime
   useEffect(() => {
@@ -121,21 +124,28 @@ const ShortVideoMobile: React.FC<VideoType> = ({
   };
 
   useEffect(() => {
-    const currentUser = localStorage.getItem("user");
-
-    if (currentUser) {
+    const userData = JSON.parse(localStorage.getItem("user") as string);
+    if (userData) {
       try {
-        const parsedUser = JSON.parse(currentUser);
-        const currentId = parsedUser.id;
-        if (currentId) {
-          setIsVideoLiked(likedBy.includes(currentId));
-          setIsVideoSaved(savedBy.includes(currentId));
-        }
+        setIsVideoLiked(likedBy.includes(userData.id));
+        setIsVideoSaved(savedBy.includes(userData.id));
       } catch (error) {
         console.error("Error parsing user data from localStorage:", error);
       }
     }
-  }, [userId]);
+  }, []);
+
+  const handleFollow = async () => {
+    try {
+      await axiosInstance.post(`/users/${userId._id}/follow`);
+      toast.success('Followed successfully!');
+      const updatedFollowing = [...user.following, userId._id];
+      dispatch(setUser({ ...user, following: updatedFollowing }));
+    } catch (error) {
+      toast.error('Error following user');
+      console.error('Error following user:', error);
+    }
+  };
 
   const handleLike = async () => {
     try {
@@ -240,7 +250,7 @@ const ShortVideoMobile: React.FC<VideoType> = ({
         />
         {/* Video Info */}
         <div className="absolute left-3 bottom-5 w-full max-w-64 text-white text-opacity-90">
-          <h3 className="text-lg font-bold">{username}<p className="text-xs text-neutral-400">{new Date(createdAt).toLocaleString()}</p></h3>
+          <h3 className="text-lg font-bold">{userId.username}<p className="text-xs text-neutral-400">{new Date(createdAt).toLocaleString()}</p></h3>
 
           {/* Video Title */}
           <p className="mt-2 text-base">{title}</p>
@@ -287,13 +297,20 @@ const ShortVideoMobile: React.FC<VideoType> = ({
         <div className="absolute right-3 top-4 flex flex-col items-center space-y-6">
           <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
             <Image
-              src={avatar}
+              src={userId.avatar}
               alt={'Avatar'}
               width={48}
               height={48}
               className="object-cover h-full w-full"
             />
-            <p className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full">+</p>
+            {userId._id !== user._id && !following?.includes(userId._id) && (
+              <p
+                className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full"
+                onClick={handleFollow}
+              >
+                +
+              </p>
+            )}
           </div>
 
           <button
@@ -341,7 +358,7 @@ const ShortVideoMobile: React.FC<VideoType> = ({
         <div className="absolute right-3 bottom-4 flex flex-col items-center space-y-6">
           <div className="flex flex-col items-center w-12 h-12 rounded-full overflow-hidden cursor-pointer">
             <Image
-              src={avatar}
+              src={userId.avatar}
               alt={'Avatar'}
               width={48}
               height={48}
