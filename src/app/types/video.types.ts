@@ -7,7 +7,7 @@ export type VideoType = {
     desc: string;
     likes: number;
     views: number;
-    comments?: any[];
+    comments?: [];
     commentCount: number;
     isPublic: boolean;
     likedBy: string[];

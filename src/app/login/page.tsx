@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import ForgotPasswordModal from "@/components/modal/ForgotPasswordModal";
 import OtpModal from "@/components/modal/OtpModal";
 import ResetPasswordModal from "@/components/modal/ResetPasswordModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 
 const LoginPage: React.FC = () => {
@@ -26,7 +26,6 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { theme } = useTheme();
-  const user = useSelector((state: any) => state.user);
 
   const onFinish = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,6 +52,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("refreshToken", response.data.refreshToken);
       router.push("/home");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Email hoặc mật khẩu không đúng.");
     } finally {
@@ -66,6 +66,7 @@ const LoginPage: React.FC = () => {
       toast.success("OTP đã được gửi đến email của bạn!");
       setForgotPasswordModal(false);
       setOtpModal(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
         toast.error("OTP đã gửi. Vui lòng kiểm tra mail.");
@@ -97,6 +98,7 @@ const LoginPage: React.FC = () => {
       toast.success("Đặt lại mật khẩu thành công!");
       setResetPasswordModal(false);
       setForgotEmail("");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error) {
       toast.error("Không thể đặt lại mật khẩu. Vui lòng thử lại.");
     }

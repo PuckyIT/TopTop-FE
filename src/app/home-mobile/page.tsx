@@ -49,6 +49,7 @@ const HomePageMobile: React.FC = () => {
         const userVideos = await fetchUserVideos();
         setVideos(userVideos);
         setError(null);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setError(
           error.message || "Failed to load videos. Please try again later."

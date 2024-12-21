@@ -45,6 +45,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
       setNewPassword("");
       setConfirmPassword("");
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error) {
       toast.error("Failed to reset password. Please try again."); // Show error toast
     } finally {

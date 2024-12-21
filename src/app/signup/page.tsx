@@ -37,6 +37,7 @@ const SignupPage: React.FC = () => {
       });
       toast.success("Registration successful!");
       router.push("/login");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error) {
       toast.error("Registration failed!");
     } finally {

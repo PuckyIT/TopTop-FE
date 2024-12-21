@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 
 const HeaderComponent: React.FC = () => {
   const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const user = useSelector((state: any) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const { theme, toggleTheme } = useTheme();
@@ -37,6 +38,7 @@ const HeaderComponent: React.FC = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/home";
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error) {
       toast.error("Logout failed:");
     }

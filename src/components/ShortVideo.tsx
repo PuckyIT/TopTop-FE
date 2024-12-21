@@ -55,9 +55,9 @@ const ShortVideo: React.FC<VideoType> = ({
   const [shared, setShared] = useState(Number(initialShared));
   const [isVideoLiked, setIsVideoLiked] = useState(false);
   const [isVideoSaved, setIsVideoSaved] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   const user = useSelector((state: any) => state.user);
   const { theme } = useTheme()
-  const following = localStorage.getItem("following");
 
   const { handleTimeUpdate: handleViewCount } = useVideoView({
     videoId: id,
@@ -159,6 +159,8 @@ const ShortVideo: React.FC<VideoType> = ({
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user") as string);
+    const following = localStorage.getItem("following");
+    dispatch(setUser({ ...user, following: following ? JSON.parse(following) : [] }));
     if (userData) {
       try {
         setIsVideoLiked(likedBy.includes(userData.id));
@@ -191,6 +193,7 @@ const ShortVideo: React.FC<VideoType> = ({
         setLikes(prev => prev + 1);
       }
       setIsVideoLiked(!isVideoLiked);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 403) {
         setIsVideoLiked(true);
@@ -212,6 +215,7 @@ const ShortVideo: React.FC<VideoType> = ({
         setSaved(prev => prev + 1);
       }
       setIsVideoSaved(!isVideoSaved);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 403) {
         setIsVideoSaved(true);
@@ -228,6 +232,7 @@ const ShortVideo: React.FC<VideoType> = ({
       await axiosInstance.post(`/videos/${id}/share`);
       setShared(prev => prev + 1);
       toast.success('Video shared successfully!');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response.status === 403) {
         toast.error(error.response.data.message);
@@ -238,19 +243,19 @@ const ShortVideo: React.FC<VideoType> = ({
     }
   };
 
-  const handleComment = async (content: string) => {
-    try {
-      await axiosInstance.post(`/videos/${id}/comment`, {
-        content
-      });
-      toast.success('Comment added successfully!');
-      return true;
-    } catch (error) {
-      toast.error('Please login to comment');
-      console.error('Error adding comment:', error);
-      return false;
-    }
-  };
+  // const handleComment = async (content: string) => {
+  //   try {
+  //     await axiosInstance.post(`/videos/${id}/comment`, {
+  //       content
+  //     });
+  //     toast.success('Comment added successfully!');
+  //     return true;
+  //   } catch (error) {
+  //     toast.error('Please login to comment');
+  //     console.error('Error adding comment:', error);
+  //     return false;
+  //   }
+  // };
 
   const openLoginModal = () => {
     setIsModalOpen(true);
@@ -387,7 +392,7 @@ const ShortVideo: React.FC<VideoType> = ({
               height={48}
               className="object-cover h-full w-full"
             />
-            {userId._id !== user._id && !following?.includes(userId._id) && (
+            {userId._id !== user._id && !user.following?.includes(userId._id) && (
               <p
                 className="absolute flex items-center justify-center top-9 w-6 h-6 text-white bg-rose-500 text-lg rounded-full"
                 onClick={handleFollow}

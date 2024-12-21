@@ -9,10 +9,8 @@ import { store } from "./redux/store";
 import { usePathname } from "next/navigation";
 import HeaderComponent from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import MobileHeader from "@/components/mobile/Header-Mobile";
-import MobileFooter from "@/components/mobile/Footer-Mobile";
 
 const inter = Inter({ subsets: ["latin"] });
 

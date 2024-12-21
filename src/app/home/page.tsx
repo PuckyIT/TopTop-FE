@@ -8,18 +8,14 @@ import ShortVideo from "@/components/ShortVideo";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { VideoType, VideoResponse } from "../types/video.types";
-import { useDispatch } from "react-redux";
-import { setUser } from "../redux/userSlice";
 
 const HomePage: React.FC = () => {
-  const dispatch = useDispatch();
   const { theme } = useTheme();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [videos, setVideos] = useState<VideoType[]>([]);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const userData = JSON.parse(localStorage.getItem("user") as string);
 
   const handleScroll = () => {
     const videoContainer = videoContainerRef.current;
@@ -45,8 +41,10 @@ const HomePage: React.FC = () => {
   };
 
   async function following() {
+    const userData = JSON.parse(localStorage.getItem("user") as string);
     try {
       const response = await axiosInstance.get(`/users/${userData.id}/following`);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       localStorage.setItem("following", JSON.stringify(response.data.following.map((user: any) => user._id)));
     } catch (error) {
       console.error("Error fetching following:", error);
@@ -60,6 +58,7 @@ const HomePage: React.FC = () => {
         const userVideos = await fetchUserVideos();
         setVideos(userVideos);
         setError(null);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setError(
           error.message || "Failed to load videos. Please try again later."

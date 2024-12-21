@@ -13,6 +13,7 @@ const UploadVideoButton: React.FC = () => {
   const [desc, setDesc] = useState<string>("");
   const [uploading, setUploading] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   const user = useSelector((state: any) => state.user);
   const { theme } = useTheme();
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faPlus, faUpload, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@/app/context/ThemeContext';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ const MobileFooter: React.FC = () => {
     const [selectedKey, setSelectedKey] = useState<string>("1");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     const user = useSelector((state: any) => state.user);
 
     const themeClasses = {

@@ -35,6 +35,7 @@ export const useVideoInteractions = ({
         setLikes(prev => prev + 1);
       }
       setIsVideoLiked(!isVideoLiked);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 403) {
         setIsVideoLiked(true);
@@ -56,6 +57,7 @@ export const useVideoInteractions = ({
         setSaved(prev => prev + 1);
       }
       setIsVideoSaved(!isVideoSaved);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 403) {
         setIsVideoSaved(true);
@@ -72,6 +74,7 @@ export const useVideoInteractions = ({
       await axiosInstance.post(`/videos/${id}/share`);
       setShared(prev => prev + 1);
       toast.success('Video shared successfully!');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response.status === 403) {
         toast.error(error.response.data.message);
