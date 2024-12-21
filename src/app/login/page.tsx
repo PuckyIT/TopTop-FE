@@ -103,11 +103,11 @@ const LoginPage: React.FC = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://toptop-be.onrender.com/api/v1/auth/google";
+    window.location.href = "https://toptop-be.onrender.com/auth/google";
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "https://toptop-be.onrender.com/api/v1/auth/github";
+    window.location.href = "https://toptop-be.onrender.com/auth/github";
   };
 
   return (
