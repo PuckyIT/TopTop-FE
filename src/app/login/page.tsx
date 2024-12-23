@@ -27,38 +27,76 @@ const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
 
+  // const onFinish = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   const formData = new FormData(e.currentTarget);
+  //   const email = formData.get("email") as string;
+  //   const password = formData.get("password") as string;
+
+  //   try {
+  //     const response = await axiosInstance.post(
+  //       "/auth/login",
+  //       {
+  //         email,
+  //         password,
+  //       }, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //     );
+  //     toast.success("Đăng nhập thành công!");
+  //     dispatch(setUser({ ...response.data, isActive: true }));
+  //     localStorage.setItem("token", response.data.accessToken);
+  //     localStorage.setItem("user", JSON.stringify(response.data.user));
+  //     localStorage.setItem("refreshToken", response.data.refreshToken);
+  //     router.push("/home");
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   } catch (error) {
+  //     toast.error("Email hoặc mật khẩu không đúng.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const onFinish = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-
+  
     try {
-      const response = await axiosInstance.post(
-        "/auth/login",
-        {
-          email,
-          password,
-        }, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-      );
+      // Đăng nhập và lấy token
+      const response = await axiosInstance.post("/auth/login", { email, password }, {
+        headers: { "Content-Type": "application/json" },
+      });
       toast.success("Đăng nhập thành công!");
-      dispatch(setUser({ ...response.data, isActive: true }));
-      localStorage.setItem("token", response.data.accessToken);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+  
+      // Lưu token vào localStorage
+      const accessToken = response.data.accessToken;
+      localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
+  
+      // Gọi API lấy thông tin người dùng
+      const userResponse = await axiosInstance.get("/users/me", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+  
+      const user = userResponse.data;
+      dispatch(setUser({ ...user, isActive: true })); // Lưu vào Redux
+      localStorage.setItem("user", JSON.stringify({ ...user, isActive: true })); // Lưu vào localStorage
+  
       router.push("/home");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Email hoặc mật khẩu không đúng.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleForgotPassword = async (email: string) => {
     try {
@@ -105,13 +143,14 @@ const LoginPage: React.FC = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://toptop-be.onrender.com/auth/google";
-    // window.location.href = "http://localhost:8080/auth/google";
+    // window.location.href = "https://toptop-be.onrender.com/auth/google";
+    window.location.href = "http://localhost:8080/auth/google";
   };
+  
 
   const handleGithubLogin = () => {
-    window.location.href = "https://toptop-be.onrender.com/auth/github";
-    // window.location.href = "http://localhost:8080/auth/github";
+    // window.location.href = "https://toptop-be.onrender.com/auth/github";
+    window.location.href = "http://localhost:8080/auth/github";
   };
 
   return (

@@ -5,7 +5,7 @@ import "@/app/globals.css";
 import { ThemeProvider } from "@/app/context/ThemeContext";
 import { AbilityProvider } from "./context/AbilityContext";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { store } from "@/app/redux/store";
 import { usePathname } from "next/navigation";
 import HeaderComponent from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
