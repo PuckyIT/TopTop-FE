@@ -41,7 +41,7 @@ export default function RootLayout({
               dangerouslySetInnerHTML={{
                 __html: `
                 (function() {
-                const theme = localStorage.getItem('theme') || 'dark';
+                const theme = localStorage.getItem('theme') || 'light';
                 document.documentElement.setAttribute('data-theme', theme);
                 })();
                 `,
@@ -51,7 +51,7 @@ export default function RootLayout({
           <AbilityProvider role={userRole}>
             <body className={inter.className}>
               {/* Cấu trúc chính của layout */}
-              <div className={`flex min-h-screen w-full`}>
+              <div className="flex min-h-screen w-full">
                 <Toaster />
                 {/* Header */}
                 {!hideHeaderFooter && <HeaderComponent />}

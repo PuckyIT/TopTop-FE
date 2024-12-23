@@ -143,14 +143,14 @@ const LoginPage: React.FC = () => {
   };
 
   const handleGoogleLogin = () => {
-    // window.location.href = "https://toptop-be.onrender.com/auth/google";
-    window.location.href = "http://localhost:8080/auth/google";
+    window.location.href = "https://toptop-be.onrender.com/auth/google";
+    // window.location.href = "http://localhost:8080/auth/google";
   };
   
 
   const handleGithubLogin = () => {
-    // window.location.href = "https://toptop-be.onrender.com/auth/github";
-    window.location.href = "http://localhost:8080/auth/github";
+    window.location.href = "https://toptop-be.onrender.com/auth/github";
+    // window.location.href = "http://localhost:8080/auth/github";
   };
 
   return (
