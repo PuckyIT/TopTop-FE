@@ -83,6 +83,7 @@ const HomePage: React.FC = () => {
         videoContainer.removeEventListener("scroll", handleScroll);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentVideoIndex]);
 
   return (

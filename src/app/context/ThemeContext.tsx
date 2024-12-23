@@ -1,7 +1,7 @@
 // src/utils/ThemeContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "dark" | "light";
 interface ThemeContextProps {
   theme: Theme;
   toggleTheme: () => void;

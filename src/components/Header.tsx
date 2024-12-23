@@ -79,10 +79,10 @@ const HeaderComponent: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full h-20 z-10 flex items-center bg-transparent border-none justify-between px-5 theme-transition transition ease-in-out duration-300 
+      className={`fixed top-0 left-0 w-full h-20 z-10 flex items-center border-none justify-between px-5 theme-transition transition ease-in-out duration-300 
         ${theme === "light"
-          ? "text-neutral-800 border-b"
-          : "text-neutral-100 border-b"
+          ? "text-neutral-800 border-b bg-white"
+          : "text-neutral-100 border-b bg-black"
         }`}
     >
       <div className="flex items-center w-1/6">
