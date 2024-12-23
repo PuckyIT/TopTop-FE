@@ -1,30 +1,33 @@
 "use client";
 
+import { setUser } from "@/app/redux/userSlice";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Image from "next/image";
+import { useDispatch } from "react-redux";
 
 const LoginCallback = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
     const email = urlParams.get("email");
-    const avatar = urlParams.get("avatar"); // Get avatar from URL
+    const avatar = urlParams.get("avatar");
 
-    if (token) {
-      // Save token, email, and avatar to localStorage
+    if (token && email && avatar) {
+      // Save to localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify({ email, avatar })); // Save avatar along with email
-
-      // Navigate to home or user page
+      localStorage.setItem("user", JSON.stringify({ email, avatar }));
+      dispatch(setUser({ email, avatar }));
+      // Navigate to home page
       router.push("/home");
     } else {
-      // Navigate to login page if no token
+      // Handle missing or invalid data
+      console.error("Missing token, email, or avatar in callback URL");
       router.push("/login");
     }
-  }, [router]);
+  }, [dispatch, router]);
 
   return (
     <div
@@ -36,7 +39,6 @@ const LoginCallback = () => {
         flexDirection: "column",
       }}
     >
-      <Image src="/logo.png" alt="Logo" width={212} height={212} />
       <p>Đang xử lý đăng nhập...</p>
     </div>
   );

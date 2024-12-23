@@ -74,8 +74,8 @@ const Sidebar = () => {
     <div
       id="sidebar"
       className={`w-64 p-4 max-h-screen theme-transition transition ease-in-out duration-300 ${theme === "light"
-        ? "bg-white text-neutral-800 border-b"
-        : "bg-black text-neutral-100 border-b"
+        ? "bg-white text-neutral-800"
+        : "bg-black text-neutral-100"
         }`}
     >
       <div className="space-y-2 mt-20 flex flex-col">
